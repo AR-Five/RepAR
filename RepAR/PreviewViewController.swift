@@ -37,53 +37,6 @@ class PreviewViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-//    func detectRectangles() {
-//        let cgImage = #imageLiteral(resourceName: "tableau-elec-large").cgImage
-//        let handler = VNImageRequestHandler(cgImage: cgImage!, options: [:])
-//
-//        let req = VNDetectRectanglesRequest { (request, err) in
-//            self.handleRectangleDetect(request: request, error: err)
-//        }
-//
-//        do {
-//            req.minimumConfidence = 0.7
-//            req.minimumSize = 10
-//            try handler.perform([req])
-//        } catch {
-//            print("Throws: \(error)")
-//        }
-//    }
-    
-//    func handleRectangleDetect(request: VNRequest, error: Error?) {
-//        guard let observations = request.results as? [VNRectangleObservation] else {
-//            return
-//        }
-//
-//        DispatchQueue.main.async {
-//            self.drawRectangles(observations: observations)
-//        }
-//    }
-    
-//    func drawRectangles(observations: [VNRectangleObservation]) {
-//        for ob in observations {
-//            let path = UIBezierPath()
-//            guard let newBL = offset(point: ob.bottomLeft) else { return }
-//            path.move(to: newBL)
-//            guard let newBR = offset(point: ob.bottomRight) else { return }
-//            guard let newTR = offset(point: ob.topRight) else { return }
-//            path.addLine(to: newBR)
-//
-//            //let x = dX + (ob.topLeft / image.scale) * scale
-//            //let y = dY + (p.y / image.scale) * scale
-//
-//            let layer = CAShapeLayer()
-//            layer.path = path.cgPath
-//            layer.strokeColor = UIColor.blue.cgColor
-//            layer.borderWidth = 3
-//            imagePreview.layer.addSublayer(layer)
-//        }
-//    }
-    
 //    func offset(point: CGPoint) -> CGPoint? {
 //        var newPoint: CGPoint
 //        guard let image = imagePreview.image else { return nil }

@@ -39,6 +39,7 @@
 		F0D69C01206D02C500581344 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F0D69C06206D02C500581344 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F0D69C08206D02C500581344 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F0F6649E20A652C400352698 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = "/Users/Guillaume/Documents/Scolaire/A3/project/RepAR-opencv/README.md"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,14 +74,15 @@
 		F0D69BEE206D02C500581344 = {
 			isa = PBXGroup;
 			children = (
+				F0F6649E20A652C400352698 /* README.md */,
 				F0B2CD4720A602B700A225E9 /* .gitignore */,
 				F0A5BAD8206E8AAE003864E8 /* PrefixHeader.pch */,
 				F0A5BAD5206E898C003864E8 /* CVWrapper.h */,
 				F0A5BAD6206E898C003864E8 /* CVWrapper.mm */,
+				F0A5BAD4206E898C003864E8 /* RepAR-Bridging-Header.h */,
 				F08C7FE2206E875A001D63AC /* Frameworks */,
 				F0D69BF9206D02C500581344 /* RepAR */,
 				F0D69BF8206D02C500581344 /* Products */,
-				F0A5BAD4206E898C003864E8 /* RepAR-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};

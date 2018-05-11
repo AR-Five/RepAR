@@ -37,6 +37,8 @@ class ARViewController: UIViewController {
     
     var resizedToProcess: UIImage?
     
+    var imageDetected = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -56,7 +58,7 @@ class ARViewController: UIViewController {
         // Show statistics such as fps and timing information
         //sceneView.showsStatistics = true
         
-        sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
+        sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         
         // Create a new scene
         //        let scene = SCNScene(named: "art.scnassets/ship.scn")!
@@ -410,24 +412,58 @@ extension ARViewController: ARSessionDelegate, ARSCNViewDelegate {
      
         guard let imageAnchor = anchor as? ARImageAnchor else { return }
         let referenceImage = imageAnchor.referenceImage
-
-        processQueue.async {
-            // Create a plane to visualize the initial position of the detected image.
-            let plane = SCNPlane(width: referenceImage.physicalSize.width,
-                                 height: referenceImage.physicalSize.height)
-            let planeNode = SCNNode(geometry: plane)
-            planeNode.opacity = 0.25
-            
-            /*
-             `SCNPlane` is vertically oriented in its local coordinate space, but
-             `ARImageAnchor` assumes the image is horizontal in its local space, so
-             rotate the plane to match.
-             */
-            planeNode.eulerAngles.x = -.pi / 2
-            
-            // Add the plane visualization to the scene.
-            node.addChildNode(planeNode)
+        
+        if !imageDetected {
+            processQueue.async {
+                // Create a plane to visualize the initial position of the detected image.
+                let plane = SCNPlane(width: referenceImage.physicalSize.width,
+                                     height: referenceImage.physicalSize.height)
+                plane.firstMaterial?.diffuse.contents = UIColor.yellow
+                let planeNode = SCNNode(geometry: plane)
+                planeNode.opacity = 0.25
+                
+                /*
+                 `SCNPlane` is vertically oriented in its local coordinate space, but
+                 `ARImageAnchor` assumes the image is horizontal in its local space, so
+                 rotate the plane to match.
+                 */
+                planeNode.eulerAngles.x = -.pi / 2
+                
+                let ballNode = self.createBall(position: SCNVector3(0.015, 0, 0.11), originsize: referenceImage.physicalSize, color: UIColor.red)
+                node.addChildNode(ballNode)
+                
+                let ballNode1 = self.createBall(position: SCNVector3(0.035, 0, 0.11), originsize: referenceImage.physicalSize, color: UIColor.green)
+                node.addChildNode(ballNode1)
+                
+                
+                // Add the plane visualization to the scene.
+                node.addChildNode(planeNode)
+                
+                print("detected")
+                self.imageDetected = true
+            }
         }
+    }
+    
+    func createBall(position: SCNVector3, originsize: CGSize, color: UIColor) -> SCNNode {
+        let ball = SCNSphere(radius: 0.005)
+        let material = SCNMaterial()
+        material.diffuse.contents = color
+        ball.materials = [material]
+        
+        let ballNode = SCNNode(geometry: ball)
+        ballNode.position = self.setPosition(position: position, originalSize: originsize)
+        return ballNode
+    }
+    
+    func setPosition(position: SCNVector3, originalSize: CGSize) -> SCNVector3 {
+        let originX = Float(-originalSize.width / 2)
+        let originZ = Float(-originalSize.height / 2)
+        var newPosition = SCNVector3()
+        newPosition.x = originX + position.x
+        newPosition.y = 0 + position.y
+        newPosition.z = originZ + position.z
+        return newPosition
     }
     
     
