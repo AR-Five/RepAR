@@ -7,12 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F04D5B8A2097DB2B001A3570 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F04D5B892097DB2B001A3570 /* PreviewViewController.swift */; };
 		F04D5B8C2097DB38001A3570 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F04D5B8B2097DB38001A3570 /* Assets.xcassets */; };
 		F08F02FB20963364007AAC48 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08F02FA20963364007AAC48 /* Helpers.swift */; };
-		F09B7449206EA99200192845 /* FrameExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09B7448206EA99200192845 /* FrameExtractor.swift */; };
-		F0A5BAD0206E883F003864E8 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0A5BACF206E883F003864E8 /* opencv2.framework */; };
-		F0A5BAD7206E898C003864E8 /* CVWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = F0A5BAD6206E898C003864E8 /* CVWrapper.mm */; };
 		F0B2CD4820A602B700A225E9 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = F0B2CD4720A602B700A225E9 /* .gitignore */; };
 		F0D69BFB206D02C500581344 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D69BFA206D02C500581344 /* AppDelegate.swift */; };
 		F0D69BFD206D02C500581344 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F0D69BFC206D02C500581344 /* art.scnassets */; };
@@ -22,15 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F04D5B892097DB2B001A3570 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		F04D5B8B2097DB38001A3570 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F08F02FA20963364007AAC48 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
-		F09B7448206EA99200192845 /* FrameExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameExtractor.swift; sourceTree = "<group>"; };
-		F0A5BACF206E883F003864E8 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
-		F0A5BAD4206E898C003864E8 /* RepAR-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RepAR-Bridging-Header.h"; sourceTree = "<group>"; };
-		F0A5BAD5206E898C003864E8 /* CVWrapper.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = CVWrapper.h; sourceTree = "<group>"; };
-		F0A5BAD6206E898C003864E8 /* CVWrapper.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = CVWrapper.mm; sourceTree = "<group>"; };
-		F0A5BAD8206E8AAE003864E8 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		F0B2CD4720A602B700A225E9 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		F0D69BF7206D02C500581344 /* RepAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RepAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0D69BFA206D02C500581344 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -47,26 +36,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F0A5BAD0206E883F003864E8 /* opencv2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		F08C7FE2206E875A001D63AC /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				F0A5BACF206E883F003864E8 /* opencv2.framework */,
-			);
-			path = Frameworks;
-			sourceTree = "<group>";
-		};
 		F08F02F920961D88007AAC48 /* lib */ = {
 			isa = PBXGroup;
 			children = (
 				F08F02FA20963364007AAC48 /* Helpers.swift */,
-				F09B7448206EA99200192845 /* FrameExtractor.swift */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -76,11 +55,6 @@
 			children = (
 				F0F6649E20A652C400352698 /* README.md */,
 				F0B2CD4720A602B700A225E9 /* .gitignore */,
-				F0A5BAD8206E8AAE003864E8 /* PrefixHeader.pch */,
-				F0A5BAD5206E898C003864E8 /* CVWrapper.h */,
-				F0A5BAD6206E898C003864E8 /* CVWrapper.mm */,
-				F0A5BAD4206E898C003864E8 /* RepAR-Bridging-Header.h */,
-				F08C7FE2206E875A001D63AC /* Frameworks */,
 				F0D69BF9206D02C500581344 /* RepAR */,
 				F0D69BF8206D02C500581344 /* Products */,
 			);
@@ -99,7 +73,6 @@
 			children = (
 				F0D69BFA206D02C500581344 /* AppDelegate.swift */,
 				F0D69BFE206D02C500581344 /* ARViewController.swift */,
-				F04D5B892097DB2B001A3570 /* PreviewViewController.swift */,
 				F0D69C00206D02C500581344 /* Main.storyboard */,
 				F0D69C05206D02C500581344 /* LaunchScreen.storyboard */,
 				F04D5B8B2097DB38001A3570 /* Assets.xcassets */,
@@ -186,11 +159,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F0D69BFF206D02C500581344 /* ARViewController.swift in Sources */,
-				F0A5BAD7206E898C003864E8 /* CVWrapper.mm in Sources */,
-				F09B7449206EA99200192845 /* FrameExtractor.swift in Sources */,
 				F08F02FB20963364007AAC48 /* Helpers.swift in Sources */,
 				F0D69BFB206D02C500581344 /* AppDelegate.swift in Sources */,
-				F04D5B8A2097DB2B001A3570 /* PreviewViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -327,13 +297,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULES = NO;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QW94L64KD7;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Frameworks",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/PrefixHeader.pch";
 				HEADER_SEARCH_PATHS = "$()";
 				INFOPLIST_FILE = RepAR/Info.plist;
@@ -341,8 +308,11 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.arfive.RepAR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "RepAR-Bridging-Header.h";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -352,13 +322,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULES = NO;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QW94L64KD7;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Frameworks",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/PrefixHeader.pch";
 				HEADER_SEARCH_PATHS = "$()";
 				INFOPLIST_FILE = RepAR/Info.plist;
@@ -366,7 +333,10 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.arfive.RepAR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "RepAR-Bridging-Header.h";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
