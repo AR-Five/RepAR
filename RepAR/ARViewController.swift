@@ -24,6 +24,8 @@ class ARViewController: UIViewController {
     var imageDetected = false
     var imageDetectedAnchor: ARImageAnchor?
     
+    var switchboard: SwitchBoard!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -79,6 +81,19 @@ class ARViewController: UIViewController {
         //frameExtractor.start()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Pause the view's session
+        sceneView.session.pause()
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Release any cached data, images, etc that aren't in use.
+    }
+    
+    
     @IBAction func resetScene(_ sender: UIButton) {
         if let imageAnchor = imageDetectedAnchor {
             sceneView.session.remove(anchor: imageAnchor)
@@ -120,18 +135,6 @@ class ARViewController: UIViewController {
         }
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        // Pause the view's session
-        sceneView.session.pause()
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
-    }
-    
     @objc func tapGesture(tap: UITapGestureRecognizer) {
         //toggleTorch(on: true)
         let point = tap.location(in: sceneView)
@@ -155,6 +158,33 @@ class ARViewController: UIViewController {
         print("position to \(node.position)")
         sceneView.scene.rootNode.addChildNode(node)
     }
+    
+    func initSwitchBoard(node: SCNNode, size: CGSize) {
+        switchboard = SwitchBoard(node: node, size: size)
+        
+        let row = SwitchBoardRow()
+        let singleSwitchSize = CGSize(width: 0.01, height: 0.035)
+        
+        let topOffset: CGFloat = 0.06
+        
+        let mainSwitch = Switch(dimension: CGSize(width: 0.025, height: 0.035), position: CGPoint(x: 0.002, y: topOffset), type: .rowSwitch)
+        row.rowSwitch = mainSwitch
+        
+        let offsetLeft: CGFloat = 0.027
+        let singleSwitches = [
+            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft, y: topOffset), type: .singleSwitch),
+            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width, y: topOffset), type: .singleSwitch),
+            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width * 2, y: topOffset), type: .singleSwitch),
+            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width * 3, y: topOffset), type: .singleSwitch),
+            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width * 4, y: topOffset), type: .singleSwitch),
+            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width * 5, y: topOffset), type: .singleSwitch),
+            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width * 6, y: topOffset), type: .singleSwitch),
+            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width * 9, y: topOffset), type: .singleSwitch),
+        ]
+        row.switches = singleSwitches
+        
+        switchboard.add(row: row)
+    }
 }
 
 // MARK: - ARSCNViewDelegate
@@ -166,42 +196,53 @@ extension ARViewController: ARSessionDelegate, ARSCNViewDelegate {
         imageDetectedAnchor = imageAnchor
         let referenceImage = imageAnchor.referenceImage
         processQueue.async {
-            /*
-            // Create a plane to visualize the initial position of the detected image.
-            let plane = SCNPlane(width: referenceImage.physicalSize.width,
-                                 height: referenceImage.physicalSize.height)
-            plane.firstMaterial?.diffuse.contents = UIColor.yellow
-            let planeNode = SCNNode(geometry: plane)
-            planeNode.opacity = 0.1
-            
-            /*
-             `SCNPlane` is vertically oriented in its local coordinate space, but
-             `ARImageAnchor` assumes the image is horizontal in its local space, so
-             rotate the plane to match.
-             */
-            planeNode.eulerAngles.x = -.pi / 2
-            
-            // Add the plane visualization to the scene.
-            node.addChildNode(planeNode)
-            */
-            
-            // add balls with coordinates relative to image
-//            let ballNode = self.createBall(position: SCNVector3(0.015, 0, 0.11), originsize: referenceImage.physicalSize, color: UIColor.red)
-//            node.addChildNode(ballNode)
-//
-//            let ballNode1 = self.createBall(position: SCNVector3(0.03, 0, 0.11), originsize: referenceImage.physicalSize, color: UIColor.green)
-//            node.addChildNode(ballNode1)
-            
-            let arrow = self.addMmodel(name: "arrow", position: SCNVector3(0.046, 0, 0.12), originsize: referenceImage.physicalSize)
-            node.addChildNode(arrow)
-            
-            let hover = SCNAction.sequence([
-                SCNAction.moveBy(x: 0, y: 0, z: 0.005, duration: 1),
-                SCNAction.moveBy(x: 0, y: 0, z: -0.005, duration: 1),
-                SCNAction.moveBy(x: 0, y: 0, z: -0.005, duration: 1),
-                SCNAction.moveBy(x: 0, y: 0, z: 0.005, duration: 1),
+            self.handleImageDetected(image: referenceImage, node: node)
+        }
+    }
+    
+    func handleImageDetected(image: ARReferenceImage, node: SCNNode) {
+        /*
+         // Create a plane to visualize the initial position of the detected image.
+         let plane = SCNPlane(width: referenceImage.physicalSize.width,
+         height: referenceImage.physicalSize.height)
+         plane.firstMaterial?.diffuse.contents = UIColor.yellow
+         let planeNode = SCNNode(geometry: plane)
+         planeNode.opacity = 0.1
+         
+         /*
+         `SCNPlane` is vertically oriented in its local coordinate space, but
+         `ARImageAnchor` assumes the image is horizontal in its local space, so
+         rotate the plane to match.
+         */
+         planeNode.eulerAngles.x = -.pi / 2
+         
+         // Add the plane visualization to the scene.
+         node.addChildNode(planeNode)
+         */
+        
+        // add balls with coordinates relative to image
+        //            let ballNode = self.createBall(position: SCNVector3(0.015, 0, 0.11), originsize: referenceImage.physicalSize, color: UIColor.red)
+        //            node.addChildNode(ballNode)
+        //
+        //            let ballNode1 = self.createBall(position: SCNVector3(0.03, 0, 0.11), originsize: referenceImage.physicalSize, color: UIColor.green)
+        //            node.addChildNode(ballNode1)
+        /*
+        let arrow = ARHelpers.addMmodel(name: "arrow", position: SCNVector3(0.046, 0, 0.12), originsize: image.physicalSize)
+        node.addChildNode(arrow)
+        
+        let hover = SCNAction.sequence([
+            SCNAction.moveBy(x: 0, y: 0, z: 0.005, duration: 1),
+            SCNAction.moveBy(x: 0, y: 0, z: -0.005, duration: 1),
+            SCNAction.moveBy(x: 0, y: 0, z: -0.005, duration: 1),
+            SCNAction.moveBy(x: 0, y: 0, z: 0.005, duration: 1),
             ])
-            arrow.runAction(SCNAction.repeat(hover, count: 300))
+        arrow.runAction(SCNAction.repeat(hover, count: 300))
+        */
+        initSwitchBoard(node: node, size: image.physicalSize)
+        for row in switchboard.rows {
+            row.switches.first?.toggleArrow(on: true)
+            let sw = row.switches.first!
+            print(sw.dimension, sw.position)
         }
     }
     
@@ -212,28 +253,9 @@ extension ARViewController: ARSessionDelegate, ARSCNViewDelegate {
         ball.materials = [material]
         
         let ballNode = SCNNode(geometry: ball)
-        ballNode.position = self.setPosition(position: position, originalSize: originsize)
+        ballNode.position = ARHelpers.setPosition(position, forSize: originsize)
         return ballNode
-    }
-    
-    // transform origin to top left
-    func setPosition(position: SCNVector3, originalSize: CGSize) -> SCNVector3 {
-        let originX = Float(-originalSize.width / 2)
-        let originZ = Float(-originalSize.height / 2)
-        var newPosition = SCNVector3()
-        newPosition.x = originX + position.x
-        newPosition.y = 0 + position.y
-        newPosition.z = originZ + position.z
-        return newPosition
-    }
-    
-    func addMmodel(name: String, position: SCNVector3, originsize: CGSize) -> SCNNode {
-        let modelScene = SCNScene(named:
-            "art.scnassets/\(name).dae")!
-        let node = modelScene.rootNode.childNode(
-            withName: name, recursively: true)!
-        node.position = self.setPosition(position: position, originalSize: originsize)
-        return node
+        
     }
     
     

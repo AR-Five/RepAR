@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		F04D5B8C2097DB38001A3570 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F04D5B8B2097DB38001A3570 /* Assets.xcassets */; };
+		F0892A9620A74EC100A1120D /* tableau-cropped.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F0892A9520A74EC000A1120D /* tableau-cropped.jpg */; };
+		F0892A9820A757F200A1120D /* SwitchBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0892A9720A757F200A1120D /* SwitchBoard.swift */; };
 		F08F02FB20963364007AAC48 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08F02FA20963364007AAC48 /* Helpers.swift */; };
 		F0B2CD4820A602B700A225E9 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = F0B2CD4720A602B700A225E9 /* .gitignore */; };
 		F0D69BFB206D02C500581344 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D69BFA206D02C500581344 /* AppDelegate.swift */; };
@@ -19,6 +21,8 @@
 
 /* Begin PBXFileReference section */
 		F04D5B8B2097DB38001A3570 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F0892A9520A74EC000A1120D /* tableau-cropped.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "tableau-cropped.jpg"; sourceTree = "<group>"; };
+		F0892A9720A757F200A1120D /* SwitchBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchBoard.swift; sourceTree = "<group>"; };
 		F08F02FA20963364007AAC48 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		F0B2CD4720A602B700A225E9 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		F0D69BF7206D02C500581344 /* RepAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RepAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -55,6 +59,7 @@
 			children = (
 				F0F6649E20A652C400352698 /* README.md */,
 				F0B2CD4720A602B700A225E9 /* .gitignore */,
+				F0892A9520A74EC000A1120D /* tableau-cropped.jpg */,
 				F0D69BF9206D02C500581344 /* RepAR */,
 				F0D69BF8206D02C500581344 /* Products */,
 			);
@@ -73,6 +78,7 @@
 			children = (
 				F0D69BFA206D02C500581344 /* AppDelegate.swift */,
 				F0D69BFE206D02C500581344 /* ARViewController.swift */,
+				F0892A9720A757F200A1120D /* SwitchBoard.swift */,
 				F0D69C00206D02C500581344 /* Main.storyboard */,
 				F0D69C05206D02C500581344 /* LaunchScreen.storyboard */,
 				F04D5B8B2097DB38001A3570 /* Assets.xcassets */,
@@ -145,6 +151,7 @@
 			files = (
 				F0B2CD4820A602B700A225E9 /* .gitignore in Resources */,
 				F0D69BFD206D02C500581344 /* art.scnassets in Resources */,
+				F0892A9620A74EC100A1120D /* tableau-cropped.jpg in Resources */,
 				F0D69C07206D02C500581344 /* LaunchScreen.storyboard in Resources */,
 				F04D5B8C2097DB38001A3570 /* Assets.xcassets in Resources */,
 				F0D69C02206D02C500581344 /* Main.storyboard in Resources */,
@@ -160,6 +167,7 @@
 			files = (
 				F0D69BFF206D02C500581344 /* ARViewController.swift in Sources */,
 				F08F02FB20963364007AAC48 /* Helpers.swift in Sources */,
+				F0892A9820A757F200A1120D /* SwitchBoard.swift in Sources */,
 				F0D69BFB206D02C500581344 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
