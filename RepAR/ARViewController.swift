@@ -16,14 +16,13 @@ class ARViewController: UIViewController {
     @IBOutlet var sceneView: ARSCNView!
     
     @IBOutlet var detectionBtn: UIButton!
-    //private let frameExtractor = FrameExtractor()
     
-    private let semaphore = DispatchSemaphore(value: 2)
     private let processQueue = DispatchQueue.global(qos: .userInitiated)
     
     var isTracking = false
     
     var imageDetected = false
+    var imageDetectedAnchor: ARImageAnchor?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,12 +39,14 @@ class ARViewController: UIViewController {
         // Set the view's delegate
         sceneView.delegate = self
         sceneView.autoenablesDefaultLighting = true
+        
+        sceneView.antialiasingMode = .multisampling4X
 
         
         // Show statistics such as fps and timing information
         //sceneView.showsStatistics = true
         
-        sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
+        //sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         
         // Create a new scene
         //        let scene = SCNScene(named: "art.scnassets/ship.scn")!
@@ -78,15 +79,22 @@ class ARViewController: UIViewController {
         //frameExtractor.start()
     }
     
-    @IBAction func toggleTracking(_ sender: UIButton) {
-        isTracking = !isTracking
-        updateButtonText()
+    @IBAction func resetScene(_ sender: UIButton) {
+        if let imageAnchor = imageDetectedAnchor {
+            sceneView.session.remove(anchor: imageAnchor)
+        }
+        
+        sceneView.scene.rootNode.childNodes.forEach { node in
+            if node.name == "balls" {
+                node.removeFromParentNode()
+            }
+        }
     }
     
     
-    func updateButtonText() {
+    func updateButtonText(imageDetected: Bool) {
         DispatchQueue.main.async {
-            self.detectionBtn.setTitle(self.isTracking ? "Stop detection" : "Start detection", for: .normal)
+            self.detectionBtn.setTitle(imageDetected ? "Reset" : "Start detection", for: .normal)
         }
     }
     
@@ -97,7 +105,7 @@ class ARViewController: UIViewController {
             do {
                 try device.lockForConfiguration()
                 
-                if on == true {
+                if on {
                     device.torchMode = .on
                 } else {
                     device.torchMode = .off
@@ -142,6 +150,7 @@ class ARViewController: UIViewController {
         let sphere = SCNSphere(radius: size)
         sphere.materials.first?.diffuse.contents = UIColor.green
         let node = SCNNode(geometry: sphere)
+        node.name = "balls"
         node.position = pos
         print("position to \(node.position)")
         sceneView.scene.rootNode.addChildNode(node)
@@ -154,36 +163,45 @@ extension ARViewController: ARSessionDelegate, ARSCNViewDelegate {
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
      
         guard let imageAnchor = anchor as? ARImageAnchor else { return }
+        imageDetectedAnchor = imageAnchor
         let referenceImage = imageAnchor.referenceImage
-        if !imageDetected {
-            processQueue.async {
-                // Create a plane to visualize the initial position of the detected image.
-                let plane = SCNPlane(width: referenceImage.physicalSize.width,
-                                     height: referenceImage.physicalSize.height)
-                plane.firstMaterial?.diffuse.contents = UIColor.yellow
-                let planeNode = SCNNode(geometry: plane)
-                planeNode.opacity = 0.25
-                
-                /*
-                 `SCNPlane` is vertically oriented in its local coordinate space, but
-                 `ARImageAnchor` assumes the image is horizontal in its local space, so
-                 rotate the plane to match.
-                 */
-                planeNode.eulerAngles.x = -.pi / 2
-                
-                let ballNode = self.createBall(position: SCNVector3(0.015, 0, 0.11), originsize: referenceImage.physicalSize, color: UIColor.red)
-                node.addChildNode(ballNode)
-                
-                let ballNode1 = self.createBall(position: SCNVector3(0.035, 0, 0.11), originsize: referenceImage.physicalSize, color: UIColor.green)
-                node.addChildNode(ballNode1)
-                
-                
-                // Add the plane visualization to the scene.
-                node.addChildNode(planeNode)
-                
-                print("detected")
-                self.imageDetected = true
-            }
+        processQueue.async {
+            /*
+            // Create a plane to visualize the initial position of the detected image.
+            let plane = SCNPlane(width: referenceImage.physicalSize.width,
+                                 height: referenceImage.physicalSize.height)
+            plane.firstMaterial?.diffuse.contents = UIColor.yellow
+            let planeNode = SCNNode(geometry: plane)
+            planeNode.opacity = 0.1
+            
+            /*
+             `SCNPlane` is vertically oriented in its local coordinate space, but
+             `ARImageAnchor` assumes the image is horizontal in its local space, so
+             rotate the plane to match.
+             */
+            planeNode.eulerAngles.x = -.pi / 2
+            
+            // Add the plane visualization to the scene.
+            node.addChildNode(planeNode)
+            */
+            
+            // add balls with coordinates relative to image
+//            let ballNode = self.createBall(position: SCNVector3(0.015, 0, 0.11), originsize: referenceImage.physicalSize, color: UIColor.red)
+//            node.addChildNode(ballNode)
+//
+//            let ballNode1 = self.createBall(position: SCNVector3(0.03, 0, 0.11), originsize: referenceImage.physicalSize, color: UIColor.green)
+//            node.addChildNode(ballNode1)
+            
+            let arrow = self.addMmodel(name: "arrow", position: SCNVector3(0.046, 0, 0.12), originsize: referenceImage.physicalSize)
+            node.addChildNode(arrow)
+            
+            let hover = SCNAction.sequence([
+                SCNAction.moveBy(x: 0, y: 0, z: 0.005, duration: 1),
+                SCNAction.moveBy(x: 0, y: 0, z: -0.005, duration: 1),
+                SCNAction.moveBy(x: 0, y: 0, z: -0.005, duration: 1),
+                SCNAction.moveBy(x: 0, y: 0, z: 0.005, duration: 1),
+            ])
+            arrow.runAction(SCNAction.repeat(hover, count: 300))
         }
     }
     
@@ -198,6 +216,7 @@ extension ARViewController: ARSessionDelegate, ARSCNViewDelegate {
         return ballNode
     }
     
+    // transform origin to top left
     func setPosition(position: SCNVector3, originalSize: CGSize) -> SCNVector3 {
         let originX = Float(-originalSize.width / 2)
         let originZ = Float(-originalSize.height / 2)
@@ -206,6 +225,15 @@ extension ARViewController: ARSessionDelegate, ARSCNViewDelegate {
         newPosition.y = 0 + position.y
         newPosition.z = originZ + position.z
         return newPosition
+    }
+    
+    func addMmodel(name: String, position: SCNVector3, originsize: CGSize) -> SCNNode {
+        let modelScene = SCNScene(named:
+            "art.scnassets/\(name).dae")!
+        let node = modelScene.rootNode.childNode(
+            withName: name, recursively: true)!
+        node.position = self.setPosition(position: position, originalSize: originsize)
+        return node
     }
     
     

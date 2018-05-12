@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+ <asset>
+  <contributor>
+   <authoring_tool>SceneKit Collada Exporter v1.0</authoring_tool>
+  </contributor>
+  <created>2018-05-12T13:49:39Z</created>
+  <modified>2018-05-12T13:49:39Z</modified>
+  <unit meter="1.000000"/>
+  <up_axis>Z_UP</up_axis>
+ </asset>
+ <library_cameras>
+  <camera id="Camera-camera" name="Camera">
+   <optics>
+    <technique_common>
+     <perspective>
+      <xfov>49.1343</xfov>
+      <znear>0.1</znear>
+      <zfar>100</zfar>
+     </perspective>
+    </technique_common>
+   </optics>
+  </camera>
+ </library_cameras>
+ <library_materials>
+  <material id="mat5-material" name="mat5">
+   <instance_effect url="#effect_mat5-material"/>
+  </material>
+ </library_materials>
+ <library_effects>
+  <effect id="effect_mat5-material">
+   <profile_COMMON>
+    <technique sid="common">
+     <phong>
+      <ambient>
+       <color>0 0 0 1</color>
+      </ambient>
+      <diffuse>
+       <color>1 0.913724 0 1</color>
+      </diffuse>
+      <specular>
+       <color>0.5 0.5 0.5 1</color>
+      </specular>
+      <shininess>
+       <float>50</float>
+      </shininess>
+      <reflective>
+       <color>0 0 0 1</color>
+      </reflective>
+      <transparency>
+       <float>1</float>
+      </transparency>
+      <index_of_refraction>
+       <float>1</float>
+      </index_of_refraction>
+     </phong>
+    </technique>
+   </profile_COMMON>
+   <extra>
+    <technique profile="SceneKit">
+     <litPerPixel>1</litPerPixel>
+     <ambient_diffuse_lock>1</ambient_diffuse_lock>
+    </technique>
+   </extra>
+  </effect>
+ </library_effects>
+ <library_geometries>
+  <geometry id="geometry1">
+   <mesh>
+    <source id="mesh905816428-mesh-positions">
+     <float_array id="ID2-array" count="54">-0.405599 8.58307e-07 -1.6224 0.2704 -0.3624 -0.2704 -1.7576 0 1.7576 1.6224 -1.7643e-06 0.405601 0.2704 0.362401 -0.270399 -1.7576 0 1.7576 0.2704 0.362401 -0.270399 0.2704 -0.3624 -0.2704 -0.405599 8.58307e-07 -1.6224 0.2704 0.362401 -0.270399 -0.405599 8.58307e-07 -1.6224 -1.7576 0 1.7576 0.2704 -0.3624 -0.2704 1.6224 -1.7643e-06 0.405601 -1.7576 0 1.7576 0.2704 0.362401 -0.270399 1.6224 -1.7643e-06 0.405601 0.2704 -0.3624 -0.2704 </float_array>
+     <technique_common>
+      <accessor source="#ID2-array" count="18" stride="3">
+       <param name="X" type="float"/>
+       <param name="Y" type="float"/>
+       <param name="Z" type="float"/>
+      </accessor>
+     </technique_common>
+    </source>
+    <source id="mesh905816428-mesh-normals">
+     <float_array id="ID3-array" count="54">-0.283597 -0.95221 -0.113439 -0.283597 -0.95221 -0.113439 -0.283597 -0.95221 -0.113439 0.11344 0.95221 0.283599 0.11344 0.95221 0.283599 0.11344 0.95221 0.283599 0.894427 0 -0.447213 0.894427 0 -0.447213 0.894427 0 -0.447213 -0.283597 0.95221 -0.113439 -0.283597 0.95221 -0.113439 -0.283597 0.95221 -0.113439 0.113438 -0.952211 0.283596 0.113438 -0.952211 0.283596 0.113438 -0.952211 0.283596 0.447214 3.26423e-07 -0.894427 0.447214 3.26423e-07 -0.894427 0.447214 3.26423e-07 -0.894427 </float_array>
+     <technique_common>
+      <accessor source="#ID3-array" count="18" stride="3">
+       <param name="X" type="float"/>
+       <param name="Y" type="float"/>
+       <param name="Z" type="float"/>
+      </accessor>
+     </technique_common>
+    </source>
+    <source id="mesh905816428-mesh-map-0">
+     <float_array id="ID4-array" count="36">-0.169248 0.0981398 -0.0143782 0.100717 0.0713554 -0.175051 -0.10666 0.16185 0.020596 0.073549 -0.0707484 -0.200411 -0.0251062 -0.0780462 -0.00836897 -0.143541 -0.163189 -0.148219 0.0692898 0.0494969 0.220926 0.0179117 -0.0666559 -0.205291 -0.0976598 0.0554931 0.00165284 0.174355 0.0630066 -0.184474 0.0630606 -0.03069 0.176048 0.0752586 0.118947 -0.0687228 </float_array>
+     <technique_common>
+      <accessor source="#ID4-array" count="18" stride="2">
+       <param name="S" type="float"/>
+       <param name="T" type="float"/>
+      </accessor>
+     </technique_common>
+    </source>
+    <vertices id="mesh905816428-mesh-positions-vertices">
+     <input semantic="POSITION" source="#mesh905816428-mesh-positions"/>
+    </vertices>
+    <triangles count="6" material="geometryElement5">
+     <input semantic="VERTEX" offset="0" source="#mesh905816428-mesh-positions-vertices"/>
+     <input semantic="NORMAL" offset="0" source="#mesh905816428-mesh-normals"/>
+     <input semantic="TEXCOORD" offset="0" source="#mesh905816428-mesh-map-0" set="1"/>
+     <p>0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 </p>
+    </triangles>
+   </mesh>
+  </geometry>
+ </library_geometries>
+ <library_visual_scenes>
+  <visual_scene id="scene6">
+   <node id="Camera" name="Camera">
+    <matrix>0.6859207 -0.3240135 0.6515582 7.481132 0.7276763 0.3054208 -0.6141704 -6.50764 0 0.8953956 0.4452714 5.343665 0 0 0 1 </matrix>
+    <instance_camera url="#Camera-camera"/>
+   </node>
+   <node id="mesh905816428" name="arrow">
+    <matrix>-0.004707488 2.60011e-09 -0.004707488 0 -0.004707488 -1.17849e-09 0.004707488 0 1.00524e-09 0.006657394 2.67187e-09 0 0 0 0 1 </matrix>
+    <instance_geometry url="#geometry1">
+     <bind_material>
+      <technique_common>
+       <instance_material symbol="geometryElement5" target="#mat5-material"/>
+      </technique_common>
+     </bind_material>
+    </instance_geometry>
+   </node>
+  </visual_scene>
+ </library_visual_scenes>
+ <scene>
+  <instance_visual_scene url="#scene6"/>
+ </scene>
+</COLLADA>
