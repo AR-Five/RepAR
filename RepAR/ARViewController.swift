@@ -17,6 +17,10 @@ class ARViewController: UIViewController {
     
     @IBOutlet var detectionBtn: UIButton!
     
+    @IBOutlet var topInfoLabel: UILabel!
+    
+    @IBOutlet var mainView: UIView!
+    
     private let processQueue = DispatchQueue.global(qos: .userInitiated)
     
     var isTracking = false
@@ -29,35 +33,16 @@ class ARViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        UIApplication.shared.statusBarStyle = .lightContent
+        topInfoLabel.isHidden = true
+        topInfoLabel.layer.cornerRadius = 15
+        
+        setLabel(text: "Dirigez vous vers votre tableau électrique.")
         
         let tapgesture = UITapGestureRecognizer(target: self, action: #selector(self.tapGesture))
         
         view.addGestureRecognizer(tapgesture)
         
-        //frameExtractor.delegate = self
-        
-        
-        // Set the view's delegate
-        sceneView.delegate = self
-        sceneView.autoenablesDefaultLighting = true
-        
-        sceneView.antialiasingMode = .multisampling4X
-
-        
-        // Show statistics such as fps and timing information
-        //sceneView.showsStatistics = true
-        
-        //sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
-        
-        // Create a new scene
-        //        let scene = SCNScene(named: "art.scnassets/ship.scn")!
-        
-        // Set the scene to the view
-        //        sceneView.scene = scene
-        
-        //processImage(image: #imageLiteral(resourceName: "tableau-elec-large"))
-        
+        initArView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -104,6 +89,30 @@ class ARViewController: UIViewController {
                 node.removeFromParentNode()
             }
         }
+        
+        setLabel(text: "Dirigez vous vers votre tableau électrique.")
+    }
+    
+    func initArView() {
+        
+        // Set the view's delegate
+        sceneView.delegate = self
+        sceneView.autoenablesDefaultLighting = true
+        
+        sceneView.antialiasingMode = .multisampling4X
+        
+        
+        // Show statistics such as fps and timing information
+        //sceneView.showsStatistics = true
+        
+        //sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
+        
+        // Create a new scene
+        //        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+        
+        // Set the scene to the view
+        //        sceneView.scene = scene
+        
     }
     
     
@@ -137,8 +146,8 @@ class ARViewController: UIViewController {
     
     @objc func tapGesture(tap: UITapGestureRecognizer) {
         //toggleTorch(on: true)
-        let point = tap.location(in: sceneView)
-        handleHit(to: point)
+        //let point = tap.location(in: sceneView)
+        //handleHit(to: point)
     }
     
     func handleHit(to point: CGPoint) {
@@ -157,6 +166,22 @@ class ARViewController: UIViewController {
         node.position = pos
         print("position to \(node.position)")
         sceneView.scene.rootNode.addChildNode(node)
+    }
+    
+    
+    func setLabel(text: String) {
+        DispatchQueue.main.async {
+            self.transitionLabel()
+            self.topInfoLabel.text = text
+        }
+    }
+    
+    func transitionLabel() {
+        topInfoLabel.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+        
+        UIView.animate(withDuration: 2, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 6, options: .allowUserInteraction, animations: {
+            self.topInfoLabel.transform = CGAffineTransform.identity
+        }, completion: nil)
     }
     
     func initSwitchBoard(node: SCNNode, size: CGSize) {
@@ -185,6 +210,19 @@ class ARViewController: UIViewController {
         
         switchboard.add(row: row)
     }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let vc = segue.destination as? TitleView {
+            vc.delegate = self
+        }
+    }
+}
+
+extension ARViewController: TitleViewDelegate {
+    func onTitleBtn() {
+        topInfoLabel.isHidden = false
+    }
 }
 
 // MARK: - ARSCNViewDelegate
@@ -201,10 +239,10 @@ extension ARViewController: ARSessionDelegate, ARSCNViewDelegate {
     }
     
     func handleImageDetected(image: ARReferenceImage, node: SCNNode) {
-        /*
+         /*
          // Create a plane to visualize the initial position of the detected image.
-         let plane = SCNPlane(width: referenceImage.physicalSize.width,
-         height: referenceImage.physicalSize.height)
+         let plane = SCNPlane(width: image.physicalSize.width,
+         height: image.physicalSize.height)
          plane.firstMaterial?.diffuse.contents = UIColor.yellow
          let planeNode = SCNNode(geometry: plane)
          planeNode.opacity = 0.1
@@ -239,10 +277,13 @@ extension ARViewController: ARSessionDelegate, ARSCNViewDelegate {
         arrow.runAction(SCNAction.repeat(hover, count: 300))
         */
         initSwitchBoard(node: node, size: image.physicalSize)
+        setLabel(text: "Actionnez le disjoncteur indiqué par la flèche.")
         for row in switchboard.rows {
+            row.rowSwitch?.toggleArrow(on: true)
+            /*
             row.switches.first?.toggleArrow(on: true)
             let sw = row.switches.first!
-            print(sw.dimension, sw.position)
+            print(sw.dimension, sw.position) */
         }
     }
     
@@ -257,6 +298,7 @@ extension ARViewController: ARSessionDelegate, ARSCNViewDelegate {
         return ballNode
         
     }
+    
     
     
     /*

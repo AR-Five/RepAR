@@ -36,6 +36,10 @@ class Switch {
     
     func toggleArrow(on: Bool) {
         arrowNode?.isHidden = !on
+        if !arrowNode!.isHidden {
+//            arrowNode?.runAction(hoverAction())
+            arrowNode?.runAction(SCNAction.group([hoverAction(), rotateAction()]))
+        }
     }
     
     func createArrow(node: SCNNode, size: CGSize) {
@@ -44,6 +48,23 @@ class Switch {
         node.addChildNode(arrowNode)
         arrowNode.isHidden = true
         self.arrowNode = arrowNode
+    }
+    
+    func hoverAction() -> SCNAction {
+        let hover = SCNAction.sequence([
+            SCNAction.moveBy(x: 0, y: 0, z: 0.002, duration: 1),
+            SCNAction.moveBy(x: 0, y: 0, z: -0.002, duration: 1),
+            SCNAction.moveBy(x: 0, y: 0, z: -0.002, duration: 1),
+            SCNAction.moveBy(x: 0, y: 0, z: 0.002, duration: 1),
+            ])
+        return SCNAction.repeat(hover, count: 300)
+    }
+    
+    func rotateAction() -> SCNAction {
+        return SCNAction.repeat(
+            SCNAction.rotateBy(x: 0, y: 0, z: 2 * .pi, duration: 10),
+            count: 300
+        )
     }
 }
 

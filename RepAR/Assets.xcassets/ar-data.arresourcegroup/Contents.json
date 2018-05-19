@@ -6,6 +6,9 @@
   "resources" : [
     {
       "filename" : "tableau-cropped.arreferenceimage"
+    },
+    {
+      "filename" : "tableau-reel.arreferenceimage"
     }
   ]
 }
