@@ -23,10 +23,10 @@ class ARViewController: UIViewController {
     
     private let processQueue = DispatchQueue.global(qos: .userInitiated)
     
-    var isTracking = false
-    
     var imageDetected = false
     var imageDetectedAnchor: ARImageAnchor?
+    
+    var detectionInitiated = false
     
     var switchboard: SwitchBoard!
     
@@ -45,25 +45,10 @@ class ARViewController: UIViewController {
         initArView()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-        guard let referenceImages = ARReferenceImage.referenceImages(inGroupNamed: "ar-data", bundle: nil) else {
-            fatalError("Missing expected asset catalog resources.")
-        }
-        
-        
-
-        // Create a session configuration
-        let configuration = ARWorldTrackingConfiguration()
-        // Run the view's session
-        configuration.planeDetection = [.horizontal, .vertical]
-        configuration.detectionImages = referenceImages
-        sceneView.session.delegate = self
-        sceneView.session.run(configuration)
-        
-        
-        //frameExtractor.start()
+        startARSession()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -71,11 +56,6 @@ class ARViewController: UIViewController {
         
         // Pause the view's session
         sceneView.session.pause()
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
     }
     
     
@@ -104,14 +84,24 @@ class ARViewController: UIViewController {
         
         // Show statistics such as fps and timing information
         //sceneView.showsStatistics = true
-        
         //sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         
-        // Create a new scene
-        //        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+    }
+    
+    func startARSession() {
+        guard let referenceImages = ARReferenceImage.referenceImages(inGroupNamed: "ar-data", bundle: nil) else {
+            fatalError("Missing expected asset catalog resources.")
+        }
         
-        // Set the scene to the view
-        //        sceneView.scene = scene
+        
+        
+        // Create a session configuration
+        let configuration = ARWorldTrackingConfiguration()
+        // Run the view's session
+        configuration.planeDetection = [.horizontal, .vertical]
+        configuration.detectionImages = referenceImages
+        sceneView.session.delegate = self
+        sceneView.session.run(configuration)
         
     }
     
@@ -222,6 +212,8 @@ class ARViewController: UIViewController {
 extension ARViewController: TitleViewDelegate {
     func onTitleBtn() {
         topInfoLabel.isHidden = false
+        detectionInitiated = true
+        //toggleTorch(on: true)
     }
 }
 
@@ -230,11 +222,13 @@ extension ARViewController: ARSessionDelegate, ARSCNViewDelegate {
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
      
-        guard let imageAnchor = anchor as? ARImageAnchor else { return }
-        imageDetectedAnchor = imageAnchor
-        let referenceImage = imageAnchor.referenceImage
-        processQueue.async {
-            self.handleImageDetected(image: referenceImage, node: node)
+        if detectionInitiated {
+            guard let imageAnchor = anchor as? ARImageAnchor else { return }
+            imageDetectedAnchor = imageAnchor
+            let referenceImage = imageAnchor.referenceImage
+            processQueue.async {
+                self.handleImageDetected(image: referenceImage, node: node)
+            }
         }
     }
     
@@ -258,26 +252,8 @@ extension ARViewController: ARSessionDelegate, ARSCNViewDelegate {
          node.addChildNode(planeNode)
          */
         
-        // add balls with coordinates relative to image
-        //            let ballNode = self.createBall(position: SCNVector3(0.015, 0, 0.11), originsize: referenceImage.physicalSize, color: UIColor.red)
-        //            node.addChildNode(ballNode)
-        //
-        //            let ballNode1 = self.createBall(position: SCNVector3(0.03, 0, 0.11), originsize: referenceImage.physicalSize, color: UIColor.green)
-        //            node.addChildNode(ballNode1)
-        /*
-        let arrow = ARHelpers.addMmodel(name: "arrow", position: SCNVector3(0.046, 0, 0.12), originsize: image.physicalSize)
-        node.addChildNode(arrow)
-        
-        let hover = SCNAction.sequence([
-            SCNAction.moveBy(x: 0, y: 0, z: 0.005, duration: 1),
-            SCNAction.moveBy(x: 0, y: 0, z: -0.005, duration: 1),
-            SCNAction.moveBy(x: 0, y: 0, z: -0.005, duration: 1),
-            SCNAction.moveBy(x: 0, y: 0, z: 0.005, duration: 1),
-            ])
-        arrow.runAction(SCNAction.repeat(hover, count: 300))
-        */
         initSwitchBoard(node: node, size: image.physicalSize)
-        setLabel(text: "Actionnez le disjoncteur indiqué par la flèche.")
+        setLabel(text: "Levez le disjoncteur sélectionné")
         for row in switchboard.rows {
             row.rowSwitch?.toggleArrow(on: true)
             /*
