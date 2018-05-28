@@ -30,9 +30,23 @@ class ARViewController: UIViewController {
     
     var switchboard: SwitchBoard!
     
+    lazy var mainTitle: TitleView = {
+        let mainTitle = storyboard?.instantiateViewController(withIdentifier: "mainTitle") as! TitleView
+        return mainTitle
+    }()
+    
+    func initTitleView() {
+        mainTitle.delegate = self
+        view.addSubview(mainTitle.view)
+        mainTitle.view.frame = view.bounds
+        mainTitle.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        mainTitle.didMove(toParentViewController: self)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        initTitleView()
         topInfoLabel.isHidden = true
         topInfoLabel.layer.cornerRadius = 15
         
@@ -48,7 +62,7 @@ class ARViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        startARSession()
+        initARSessionDefault()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -81,28 +95,34 @@ class ARViewController: UIViewController {
         
         sceneView.antialiasingMode = .multisampling4X
         
-        
         // Show statistics such as fps and timing information
         //sceneView.showsStatistics = true
         //sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         
     }
     
-    func startARSession() {
+    
+    func initARSessionDefault() {
+        // Create a session configuration
+        let configuration = ARWorldTrackingConfiguration()
+        
+        // Run the view's session
+        configuration.planeDetection = [.horizontal, .vertical]
+        sceneView.session.delegate = self
+        sceneView.session.run(configuration)
+    }
+    
+    func initARSessionImages() {
         guard let referenceImages = ARReferenceImage.referenceImages(inGroupNamed: "ar-data", bundle: nil) else {
             fatalError("Missing expected asset catalog resources.")
         }
-        
-        
         
         // Create a session configuration
         let configuration = ARWorldTrackingConfiguration()
         // Run the view's session
         configuration.planeDetection = [.horizontal, .vertical]
         configuration.detectionImages = referenceImages
-        sceneView.session.delegate = self
         sceneView.session.run(configuration)
-        
     }
     
     
@@ -213,6 +233,7 @@ extension ARViewController: TitleViewDelegate {
     func onTitleBtn() {
         topInfoLabel.isHidden = false
         detectionInitiated = true
+        initARSessionImages()
         //toggleTorch(on: true)
     }
 }

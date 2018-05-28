@@ -9,7 +9,9 @@
 import UIKit
 
 enum RepairAction {
+    case gotoSwitchBoard
     case pullLeverUp, pullLeverDown
+    case end
 }
 
 enum RepairActionStatus {
@@ -62,10 +64,8 @@ class RepairStep {
 
 
 class Repair {
-    var id: String
     var firstTask: RepairStep
-    init(id: String, firstTask: RepairStep) {
-        self.id = id
+    init(firstTask: RepairStep) {
         self.firstTask = firstTask
     }
 }

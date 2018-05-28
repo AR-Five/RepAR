@@ -19,6 +19,9 @@ class TitleView: UIViewController {
     @IBOutlet var titleLabel: UILabel!
     @IBAction func titleButton(_ sender: UIButton) {
         view.isHidden = true
+        self.didMove(toParentViewController: nil)
+        self.view.removeFromSuperview()
+        self.removeFromParentViewController()
         if let d = delegate {
             d.onTitleBtn()
         }
