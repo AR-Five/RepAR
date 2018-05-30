@@ -19,5 +19,5 @@ func setupRepair() -> Repair {
     ]
     let rep13 = RepairStep(text: "Votre tableau électrique est opérationnel", action: .end)
     
-    return Repair(firstTask: rep11)
+    return Repair()
 }

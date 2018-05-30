@@ -13,6 +13,10 @@ enum SwitchType {
     case rowSwitch, singleSwitch
 }
 
+enum SwitchStatus {
+    case fucked
+}
+
 class Switch {
     var dimension: CGSize
     var position: CGPoint
@@ -69,15 +73,15 @@ class Switch {
 }
 
 class SwitchBoardRow {
-    var rowSwitch: Switch?
+    var rowSwitch: Switch!
     var switches = [Switch]()
 }
 
 class SwitchBoard {
-    var rows = [SwitchBoardRow]()
+    public var rows = [SwitchBoardRow]()
     
-    var physicalSize: CGSize
-    var node: SCNNode
+    private var physicalSize: CGSize
+    private var node: SCNNode
     
     init(node: SCNNode, size: CGSize) {
         self.node = node
@@ -85,7 +89,7 @@ class SwitchBoard {
     }
     
     func add(row: SwitchBoardRow) {
-        row.rowSwitch?.createArrow(node: node, size: physicalSize)
+        row.rowSwitch.createArrow(node: node, size: physicalSize)
         row.switches.forEach { $0.createArrow(node: node, size: physicalSize) }
         rows.append(row)
     }
