@@ -82,7 +82,7 @@ class RepairStep {
 class Repair {
     
     static func run() -> RepairStep {
-        let goToPanel = RepairStep(text: "Allez à votre panneau électrique", action: .gotoSwitchBoard, view: .navigation)
+        let goToPanel = RepairStep(text: "Allez à votre panneau électrique", action: .gotoSwitchBoard)
         
         //let chooseMainSwitch = RepairStep(text: "Touchez le/les disjoncteur(s) dont le levier est abaissé", action: .chooseMainSwitch)
         //goToPanel.then(chooseMainSwitch)
@@ -93,7 +93,8 @@ class Repair {
         let liftSelectedSwitch = RepairStep(text: "Levez le disjoncteur selectionné", action: .pullLeverUp, currentSwitch: row.rowSwitch, view: .choices)
         liftSelectedSwitch.choicesButtonLabel = [
             RepairButtonChoice(id: "down", title: "Il est redescendu"),
-            RepairButtonChoice(id: "up", title: "Il reste levé")
+            RepairButtonChoice(id: "up", title: "Il reste levé"),
+            RepairButtonChoice(id: "up", title: "Je ne sais pas"),
         ]
         
         let endFirstCase = RepairStep(text: "Votre tableau électrique est opérationnel", action: .end)

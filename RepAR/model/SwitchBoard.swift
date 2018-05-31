@@ -25,6 +25,7 @@ class Switch {
     var displayArrow = false
     
     var arrowNode: SCNNode?
+    var handNode: SCNNode?
     
     init(dimension: CGSize, position: CGPoint, type: SwitchType) {
         self.dimension = dimension
@@ -46,12 +47,39 @@ class Switch {
         }
     }
     
+    func toggleHand(on: Bool) {
+        handNode?.isHidden = !on
+        if !handNode!.isHidden {
+            //handNode?.childNode(withName: "Armature", recursively: true)?.addAnimation(animations["arm-down"]!, forKey: "arm-down")
+        }
+    }
+    
+    func initAllObjects(node: SCNNode, size: CGSize) {
+        createArrow(node: node, size: size)
+        createHand(node: node, size: size)
+    }
+    
     func createArrow(node: SCNNode, size: CGSize) {
         let pos = labelPosition(offset: 0.02) // offset 2cm
-        let arrowNode = ARHelpers.addMmodel(name: "arrow", position: pos, originsize: size)
+        let arrowNode = ARHelpers.addMmodel(name: "arrow", position: pos, originsize: size, format: "dae")
         node.addChildNode(arrowNode)
         arrowNode.isHidden = true
         self.arrowNode = arrowNode
+    }
+    
+    func createHand(node: SCNNode, size: CGSize) {
+        let pos = labelPosition(offset: -0.03)
+        let handNode = ARHelpers.addMmodel(name: "arm-down", position: pos, originsize: size)
+        node.addChildNode(handNode)
+        handNode.isHidden = true
+        
+//        let armDownAnimation = CAAnimation.animationWithSceneNamed("art.scnassets/arm-anim1.dae")!
+//        let armtr = handNode.childNode(withName: "Armature", recursively: true)!
+//        armtr.addAnimation(armDownAnimation, forKey: "arm-anim1-1")
+        
+        //loadAnimation(withKey: "ArmDown", sceneName: "art.scnassets/arm-down", animationIdentifier: "arm-down")
+
+        self.handNode = handNode
     }
     
     func hoverAction() -> SCNAction {
@@ -70,6 +98,22 @@ class Switch {
             count: 300
         )
     }
+    /*
+    func loadAnimation(withKey: String, sceneName: String, animationIdentifier:String) {
+        let sceneURL = Bundle.main.url(forResource: sceneName, withExtension: "scn")
+        let sceneSource = SCNSceneSource(url: sceneURL!, options: nil)
+        
+        if let animationObject = sceneSource?.entryWithIdentifier(animationIdentifier, withClass: CAAnimation.self) {
+            // The animation will only play once
+            animationObject.repeatCount = 1
+            // To create smooth transitions between animations
+            animationObject.fadeInDuration = CGFloat(1)
+            animationObject.fadeOutDuration = CGFloat(0.5)
+            
+            // Store the animation for later use
+            animations[withKey] = animationObject
+        }
+    }*/
 }
 
 class SwitchBoardRow {
@@ -94,12 +138,11 @@ class SwitchBoard {
     }
     
     func setup() {
-        var row = SwitchBoardRow()
-        
         topOffset = 0.06
         mainSwitchSize = CGSize(width: 0.025, height: 0.035)
         singleSwitchSize = CGSize(width: 0.01, height: 0.035)
         
+        var row = SwitchBoardRow()
         addSwitch(type: .rowSwitch, to: &row)
         addSwitch(type: .singleSwitch, to: &row, position: 0)
         addSwitch(type: .singleSwitch, to: &row, position: 1)
@@ -111,32 +154,23 @@ class SwitchBoard {
         addSwitch(type: .singleSwitch, to: &row, position: 9)
         
         add(row: row)
-        
-//        let topOffset: CGFloat = 0.06
-//        let offsetLeft: CGFloat = 0.027
-        
-        /*
-        let mainSwitch = Switch(dimension: CGSize(width: 0.025, height: 0.035), position: CGPoint(x: 0.002, y: topOffset), type: .rowSwitch)
-        row.rowSwitch = mainSwitch
-        
-        
-        let singleSwitches = [
-            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft, y: topOffset), type: .singleSwitch),
-            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width, y: topOffset), type: .singleSwitch),
-            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width * 2, y: topOffset), type: .singleSwitch),
-            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width * 3, y: topOffset), type: .singleSwitch),
-            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width * 4, y: topOffset), type: .singleSwitch),
-            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width * 5, y: topOffset), type: .singleSwitch),
-            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width * 6, y: topOffset), type: .singleSwitch),
-            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width * 9, y: topOffset), type: .singleSwitch),
-            ]
-        row.switches = singleSwitches*/
     }
     
     func add(row: SwitchBoardRow) {
-        row.rowSwitch.createArrow(node: node, size: physicalSize)
-        row.switches.forEach { $0.createArrow(node: node, size: physicalSize) }
+        row.rowSwitch.initAllObjects(node: node, size: physicalSize)
+        row.switches.forEach { $0.initAllObjects(node: node, size: physicalSize) }
         rows.append(row)
+    }
+    
+    func hideAllHints() {
+        for row in rows {
+            row.rowSwitch.toggleArrow(on: false)
+            row.rowSwitch.toggleHand(on: false)
+            row.switches.forEach {
+                $0.toggleArrow(on: false)
+                $0.toggleHand(on: false)
+            }
+        }
     }
     
     func addSwitch(type: SwitchType, to row: inout SwitchBoardRow, position: CGFloat = 0) {

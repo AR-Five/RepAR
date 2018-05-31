@@ -13,6 +13,7 @@ struct ViewsIdentifier {
     static let mainView = "mainAR"
     static let titleView = "mainTitle"
     static let navigationView = "navigationView"
+    static let choiceView = "choiceView"
 }
 
 extension matrix_float4x4 {
@@ -36,6 +37,21 @@ extension UIView {
     }
 }
 
+extension CAAnimation {
+    class func animationWithSceneNamed(_ name: String) -> CAAnimation? {
+        var animation: CAAnimation?
+        if let scene = SCNScene(named: name) {
+            scene.rootNode.enumerateChildNodes({ (child, stop) in
+                if child.animationKeys.count > 0 {
+                    animation = child.animation(forKey: child.animationKeys.first!)
+                    stop.initialize(to: true)
+                }
+            })
+        }
+        return animation
+    }
+}
+
 class ARHelpers {
     
     // transform origin to top left
@@ -49,8 +65,8 @@ class ARHelpers {
         return newPosition
     }
     
-    static func addMmodel(name: String, position: SCNVector3, originsize: CGSize) -> SCNNode {
-        let modelScene = SCNScene(named: "art.scnassets/\(name).dae")!
+    static func addMmodel(name: String, position: SCNVector3, originsize: CGSize, format: String = "scn") -> SCNNode {
+        let modelScene = SCNScene(named: "art.scnassets/\(name).\(format)")!
         let node = modelScene.rootNode.childNode(withName: name, recursively: true)!
         node.position = setPosition(position, forSize: originsize)
         return node

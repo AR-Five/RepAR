@@ -290,7 +290,59 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fcv-BU-f6n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1415.2" y="-291.87192118226602"/>
+            <point key="canvasLocation" x="1351" y="-292"/>
+        </scene>
+        <!--Choice View Controller-->
+        <scene sceneID="CQc-S7-1DA">
+            <objects>
+                <viewController storyboardIdentifier="choiceView" id="lie-AZ-lC6" customClass="ChoiceViewController" customModule="RepAR" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="oaK-Vg-UY5">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="BU4-I9-IQ8">
+                                <rect key="frame" x="16" y="718" width="343" height="60"/>
+                                <subviews>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Lv-ey-MBI" customClass="RoundedButton" customModule="RepAR" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="60"/>
+                                        <color key="backgroundColor" red="0.99215686270000003" green="1" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="p4L-Fd-NUj"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="FredokaOne-Regular" family="Fredoka One" pointSize="25"/>
+                                        <state key="normal" title="Button">
+                                            <color key="titleColor" red="0.28627450980000002" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadiusValue">
+                                                <real key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="round" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="onTapButton:" destination="lie-AZ-lC6" eventType="touchUpInside" id="uEZ-uS-tSf"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" id="dzX-Kh-oJ9"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="yVo-aa-MLw" firstAttribute="trailing" secondItem="BU4-I9-IQ8" secondAttribute="trailing" constant="16" id="5oc-5J-vwB"/>
+                            <constraint firstItem="BU4-I9-IQ8" firstAttribute="bottom" secondItem="yVo-aa-MLw" secondAttribute="bottom" id="aIh-Ln-QkV"/>
+                            <constraint firstItem="BU4-I9-IQ8" firstAttribute="leading" secondItem="yVo-aa-MLw" secondAttribute="leading" constant="16" id="zhP-oX-VSo"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="yVo-aa-MLw"/>
+                    </view>
+                    <connections>
+                        <outlet property="stackView" destination="BU4-I9-IQ8" id="3AN-oh-3Z4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="na1-aW-rDO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2078" y="-292"/>
         </scene>
     </scenes>
     <resources>

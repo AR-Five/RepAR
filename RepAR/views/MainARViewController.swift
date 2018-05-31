@@ -18,7 +18,7 @@ class MainARViewController: UIViewController {
     var delegate: MainARDelegate?
     
     var switchboard: SwitchBoard?
-    var currentStep: RepairStep!
+    var currentStep: RepairStep?
     
     var nbSteps = 12 {
         didSet { updateProgress() }
@@ -31,6 +31,10 @@ class MainARViewController: UIViewController {
        return storyboard?.instantiateViewController(withIdentifier: ViewsIdentifier.navigationView) as! NavigationViewController
     }()
     
+    lazy var choiceView: ChoiceViewController = {
+        return storyboard?.instantiateViewController(withIdentifier: ViewsIdentifier.choiceView) as! ChoiceViewController
+    }()
+    
     @IBOutlet var infoLabel: UILabel!
     @IBOutlet var containerView: UIView!
     @IBOutlet var progressLabel: UILabel!
@@ -40,7 +44,8 @@ class MainARViewController: UIViewController {
     @IBAction func onReset(_ sender: UIButton) {
         delegate?.onReset()
         stepsDone = 0
-        handleSteps(step: currentStep)
+        currentStep = Repair.run()
+        handleCurrentStep()
     }
     
     @IBAction func onToggleMenu(_ sender: UIButton) {
@@ -60,7 +65,7 @@ class MainARViewController: UIViewController {
         
         currentStep = Repair.run()
         
-        handleSteps(step: currentStep)
+        handleCurrentStep()
     }
     
     func handleImageDetected(image: ARReferenceImage, node: SCNNode) {
@@ -86,7 +91,7 @@ class MainARViewController: UIViewController {
         switchboard = SwitchBoard(node: node, size: image.physicalSize)
         if let row = switchboard?.rows.first {
             currentStep = Repair.firstCase(row: row)
-            handleSteps(step: currentStep)
+            handleCurrentStep()
         }
 //
 //        for row in swb.rows {
@@ -99,22 +104,24 @@ class MainARViewController: UIViewController {
     }
     
     
-    func handleSteps(step: RepairStep?) {
-        guard let s = step else { return }
+    func handleCurrentStep() {
+        guard let step = currentStep else { return }
+        handleShowToolsView(type: step.viewType)
         
-        setLabel(text: s.text)
-        
+        setLabel(text: step.text)
         stepsDone += 1
         
-        handleShowToolsView(type: s.viewType)
-        
-        switch s.action {
-        case .gotoSwitchBoard:
-            
-            return
-        default:
+        if step.action == .pullLeverUp {
+//            step.currentSwitch?.toggleHand(on: true)
+            step.currentSwitch?.toggleArrow(on: true)
+            DispatchQueue.main.async {
+                self.choiceView.addButtons(step.choicesButtonLabel)
+            }
             return
         }
+        
+        
+        switchboard?.hideAllHints()
     }
     
     func handleShowToolsView(type: RepairViewType) {
@@ -122,6 +129,12 @@ class MainARViewController: UIViewController {
             containerView.show(view: navigationView.view)
         } else {
             containerView.hide(view: navigationView.view)
+        }
+        
+        if type == .choices {
+            containerView.show(view: choiceView.view)
+        } else {
+            containerView.hide(view: choiceView.view)
         }
         
     }
@@ -151,16 +164,16 @@ class MainARViewController: UIViewController {
 
 extension MainARViewController: NavigationDelegate {
     func onNext() {
-        if let next = currentStep.getNext() {
+        if let next = currentStep?.getNext() {
             currentStep = next
-            handleSteps(step: currentStep)
+            handleCurrentStep()
         }
     }
     
     func onBack() {
-        if let prev = currentStep.prev {
+        if let prev = currentStep?.prev {
             currentStep = prev
-            handleSteps(step: currentStep)
+            handleCurrentStep()
         }
     }
 }
