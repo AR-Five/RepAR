@@ -75,7 +75,7 @@ class RepairStep {
 
 class Repair {
     
-    func startSteps() -> RepairStep {
+    func run() -> RepairStep {
         let goToPanel = RepairStep(text: "Allez à votre panneau électrique", action: .gotoSwitchBoard)
         let chooseMainSwitch = RepairStep(text: "Touchez le/les disjoncteur(s) dont le levier est abaissé", action: .chooseMainSwitch)
         goToPanel.then(chooseMainSwitch)

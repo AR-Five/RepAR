@@ -41,7 +41,7 @@ class Switch {
     func toggleArrow(on: Bool) {
         arrowNode?.isHidden = !on
         if !arrowNode!.isHidden {
-//            arrowNode?.runAction(hoverAction())
+            //            arrowNode?.runAction(hoverAction())
             arrowNode?.runAction(SCNAction.group([hoverAction(), rotateAction()]))
         }
     }
@@ -86,6 +86,31 @@ class SwitchBoard {
     init(node: SCNNode, size: CGSize) {
         self.node = node
         self.physicalSize = size
+        setup()
+    }
+    
+    func setup() {
+        let row = SwitchBoardRow()
+        
+        let singleSwitchSize = CGSize(width: 0.01, height: 0.035)
+        let topOffset: CGFloat = 0.06
+        let offsetLeft: CGFloat = 0.027
+        
+        let mainSwitch = Switch(dimension: CGSize(width: 0.025, height: 0.035), position: CGPoint(x: 0.002, y: topOffset), type: .rowSwitch)
+        row.rowSwitch = mainSwitch
+        
+        let singleSwitches = [
+            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft, y: topOffset), type: .singleSwitch),
+            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width, y: topOffset), type: .singleSwitch),
+            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width * 2, y: topOffset), type: .singleSwitch),
+            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width * 3, y: topOffset), type: .singleSwitch),
+            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width * 4, y: topOffset), type: .singleSwitch),
+            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width * 5, y: topOffset), type: .singleSwitch),
+            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width * 6, y: topOffset), type: .singleSwitch),
+            Switch(dimension: singleSwitchSize, position: CGPoint(x: offsetLeft + singleSwitchSize.width * 9, y: topOffset), type: .singleSwitch),
+            ]
+        row.switches = singleSwitches
+        add(row: row)
     }
     
     func add(row: SwitchBoardRow) {

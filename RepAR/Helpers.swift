@@ -9,6 +9,12 @@
 import ARKit
 
 
+struct ViewsIdentifier {
+    static let mainView = "mainAR"
+    static let titleView = "mainTitle"
+    static let nextPrevView = "nextPrevView"
+}
+
 extension matrix_float4x4 {
     func position() -> SCNVector3 {
         return SCNVector3(columns.3.x, columns.3.y, columns.3.z)

@@ -12,9 +12,15 @@ import UIKit
 class RoundedButton: UIButton {
     
     @IBInspectable var cornerRadiusValue: CGFloat = 0
+    @IBInspectable var round: Bool = false
     
     override func draw(_ rect: CGRect) {
-        layer.cornerRadius = cornerRadiusValue
+        if round {
+            layer.cornerRadius = rect.height / 2
+        } else {
+            layer.cornerRadius = cornerRadiusValue
+        }
+        
 //        layer.shadowColor = UIColor.black.cgColor
 //        layer.shadowOpacity = 1
 //        layer.shadowOffset = CGSize(width: 0, height: 2)
