@@ -21,6 +21,10 @@ enum RepairActionStatus {
     case pending, active, done, failed
 }
 
+enum RepairViewType {
+    case navigation, choices, none
+}
+
 struct RepairButtonChoice {
     let id: String
     let title: String
@@ -29,6 +33,7 @@ struct RepairButtonChoice {
 class RepairStep {
     let text: String
     let action: RepairAction
+    var viewType: RepairViewType = .none
     var status: RepairActionStatus = .pending
     
     var currentSwitch: Switch?
@@ -61,13 +66,14 @@ class RepairStep {
         return self.next
     }
     
-    init(text: String, action: RepairAction) {
+    init(text: String, action: RepairAction, view: RepairViewType = .none) {
         self.text = text
         self.action = action
+        self.viewType = view
     }
     
-    convenience init(text: String, action: RepairAction, currentSwitch: Switch) {
-        self.init(text: text, action: action)
+    convenience init(text: String, action: RepairAction, currentSwitch: Switch, view: RepairViewType = .none) {
+        self.init(text: text, action: action, view: view)
         self.currentSwitch = currentSwitch
     }
 }
@@ -75,15 +81,16 @@ class RepairStep {
 
 class Repair {
     
-    func run() -> RepairStep {
-        let goToPanel = RepairStep(text: "Allez à votre panneau électrique", action: .gotoSwitchBoard)
-        let chooseMainSwitch = RepairStep(text: "Touchez le/les disjoncteur(s) dont le levier est abaissé", action: .chooseMainSwitch)
-        goToPanel.then(chooseMainSwitch)
+    static func run() -> RepairStep {
+        let goToPanel = RepairStep(text: "Allez à votre panneau électrique", action: .gotoSwitchBoard, view: .navigation)
+        
+        //let chooseMainSwitch = RepairStep(text: "Touchez le/les disjoncteur(s) dont le levier est abaissé", action: .chooseMainSwitch)
+        //goToPanel.then(chooseMainSwitch)
         return goToPanel
     }
     
-    func firstCase(row: SwitchBoardRow) -> RepairStep {
-        let liftSelectedSwitch = RepairStep(text: "Levez le disjoncteur selectionné", action: .pullLeverUp, currentSwitch: row.rowSwitch)
+    static func firstCase(row: SwitchBoardRow) -> RepairStep {
+        let liftSelectedSwitch = RepairStep(text: "Levez le disjoncteur selectionné", action: .pullLeverUp, currentSwitch: row.rowSwitch, view: .choices)
         liftSelectedSwitch.choicesButtonLabel = [
             RepairButtonChoice(id: "down", title: "Il est redescendu"),
             RepairButtonChoice(id: "up", title: "Il reste levé")
@@ -96,7 +103,7 @@ class Repair {
         return liftSelectedSwitch
     }
     
-    func secondCase(row: SwitchBoardRow) -> RepairStep {
+    static func secondCase(row: SwitchBoardRow) -> RepairStep {
         let allDown = RepairStep(text: "Abaisser tout les disjoncteurs sélectionnés", action: .pullAllSimpleSwitchDown)
         let firstOneDown = RepairStep(text: "Remonter le disjoncteur sélectionné", action: .pullLeverUp, currentSwitch: row.rowSwitch)
         var lastStep = firstOneDown

@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		F003D5A420BAB8BD00D046B2 /* Repair.swift in Sources */ = {isa = PBXBuildFile; fileRef = F003D5A320BAB8BD00D046B2 /* Repair.swift */; };
 		F00664C720BCBACC007F6D62 /* RepairActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00664C620BCBACC007F6D62 /* RepairActions.swift */; };
-		F0234DB020BF555A004AF740 /* NextPrevViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0234DAF20BF555A004AF740 /* NextPrevViewController.swift */; };
+		F0234DB020BF555A004AF740 /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0234DAF20BF555A004AF740 /* NavigationViewController.swift */; };
 		F0234DB220BF5779004AF740 /* MainARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0234DB120BF5779004AF740 /* MainARViewController.swift */; };
 		F0234DB420BF6514004AF740 /* fredokaFont.plist in Resources */ = {isa = PBXBuildFile; fileRef = F0234DB320BF6514004AF740 /* fredokaFont.plist */; };
 		F0234DB620BF65CD004AF740 /* ScaledFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0234DB520BF65CD004AF740 /* ScaledFont.swift */; };
@@ -32,7 +32,7 @@
 /* Begin PBXFileReference section */
 		F003D5A320BAB8BD00D046B2 /* Repair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repair.swift; sourceTree = "<group>"; };
 		F00664C620BCBACC007F6D62 /* RepairActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepairActions.swift; sourceTree = "<group>"; };
-		F0234DAF20BF555A004AF740 /* NextPrevViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextPrevViewController.swift; sourceTree = "<group>"; };
+		F0234DAF20BF555A004AF740 /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
 		F0234DB120BF5779004AF740 /* MainARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainARViewController.swift; sourceTree = "<group>"; };
 		F0234DB320BF6514004AF740 /* fredokaFont.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = fredokaFont.plist; sourceTree = "<group>"; };
 		F0234DB520BF65CD004AF740 /* ScaledFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaledFont.swift; sourceTree = "<group>"; };
@@ -90,7 +90,7 @@
 				F0D69BFE206D02C500581344 /* ARViewController.swift */,
 				F0234DB120BF5779004AF740 /* MainARViewController.swift */,
 				F0892A9E20A8CC4600A1120D /* TitleViewController.swift */,
-				F0234DAF20BF555A004AF740 /* NextPrevViewController.swift */,
+				F0234DAF20BF555A004AF740 /* NavigationViewController.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -230,7 +230,7 @@
 				F08F02FB20963364007AAC48 /* Helpers.swift in Sources */,
 				F0892A9820A757F200A1120D /* SwitchBoard.swift in Sources */,
 				F0234DB220BF5779004AF740 /* MainARViewController.swift in Sources */,
-				F0234DB020BF555A004AF740 /* NextPrevViewController.swift in Sources */,
+				F0234DB020BF555A004AF740 /* NavigationViewController.swift in Sources */,
 				F0D69BFB206D02C500581344 /* AppDelegate.swift in Sources */,
 				F0892A9F20A8CC4600A1120D /* TitleViewController.swift in Sources */,
 			);

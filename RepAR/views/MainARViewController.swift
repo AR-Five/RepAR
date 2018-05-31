@@ -27,8 +27,8 @@ class MainARViewController: UIViewController {
         didSet { updateProgress() }
     }
     
-    lazy var nextPrevView: NextPrevViewController = {
-       return storyboard?.instantiateViewController(withIdentifier: ViewsIdentifier.nextPrevView) as! NextPrevViewController
+    lazy var navigationView: NavigationViewController = {
+       return storyboard?.instantiateViewController(withIdentifier: ViewsIdentifier.navigationView) as! NavigationViewController
     }()
     
     @IBOutlet var infoLabel: UILabel!
@@ -39,6 +39,7 @@ class MainARViewController: UIViewController {
     
     @IBAction func onReset(_ sender: UIButton) {
         delegate?.onReset()
+        stepsDone = 0
         handleSteps(step: currentStep)
     }
     
@@ -53,10 +54,12 @@ class MainARViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         infoLabel.layer.cornerRadius = 15
+        navigationView.delegate = self
         
-        let repair = Repair()
+        updateProgress()
         
-        currentStep = repair.run()
+        currentStep = Repair.run()
+        
         handleSteps(step: currentStep)
     }
     
@@ -81,7 +84,10 @@ class MainARViewController: UIViewController {
          */
         
         switchboard = SwitchBoard(node: node, size: image.physicalSize)
-        handleSteps(step: currentStep.getNext())
+        if let row = switchboard?.rows.first {
+            currentStep = Repair.firstCase(row: row)
+            handleSteps(step: currentStep)
+        }
 //
 //        for row in swb.rows {
 //            row.rowSwitch?.toggleArrow(on: true)
@@ -97,14 +103,27 @@ class MainARViewController: UIViewController {
         guard let s = step else { return }
         
         setLabel(text: s.text)
-        view.addSubview(nextPrevView.view)
+        
+        stepsDone += 1
+        
+        handleShowToolsView(type: s.viewType)
         
         switch s.action {
         case .gotoSwitchBoard:
+            
             return
         default:
             return
         }
+    }
+    
+    func handleShowToolsView(type: RepairViewType) {
+        if type == .navigation {
+            containerView.show(view: navigationView.view)
+        } else {
+            containerView.hide(view: navigationView.view)
+        }
+        
     }
     
     func setLabel(text: String) {
@@ -123,7 +142,26 @@ class MainARViewController: UIViewController {
     }
     
     private func updateProgress() {
-        progressLabel.text = "\(stepsDone)/\(nbSteps)"
-        progressBar.setProgress(Float(nbSteps / stepsDone), animated: true)
+        DispatchQueue.main.async {
+            self.progressLabel.text = "\(self.stepsDone)/\(self.nbSteps)"
+            self.progressBar.setProgress(Float(self.stepsDone) / Float(self.nbSteps), animated: true)
+        }
     }
 }
+
+extension MainARViewController: NavigationDelegate {
+    func onNext() {
+        if let next = currentStep.getNext() {
+            currentStep = next
+            handleSteps(step: currentStep)
+        }
+    }
+    
+    func onBack() {
+        if let prev = currentStep.prev {
+            currentStep = prev
+            handleSteps(step: currentStep)
+        }
+    }
+}
+

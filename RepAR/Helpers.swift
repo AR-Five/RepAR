@@ -12,12 +12,27 @@ import ARKit
 struct ViewsIdentifier {
     static let mainView = "mainAR"
     static let titleView = "mainTitle"
-    static let nextPrevView = "nextPrevView"
+    static let navigationView = "navigationView"
 }
 
 extension matrix_float4x4 {
     func position() -> SCNVector3 {
         return SCNVector3(columns.3.x, columns.3.y, columns.3.z)
+    }
+}
+
+extension UIView {
+    func show(view: UIView) {
+        DispatchQueue.main.async {
+            self.addSubview(view)
+            view.frame = self.bounds
+        }
+    }
+    
+    func hide(view: UIView) {
+        DispatchQueue.main.async {
+            view.removeFromSuperview()
+        }
     }
 }
 
