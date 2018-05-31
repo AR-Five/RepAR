@@ -20,8 +20,22 @@ class MainARViewController: UIViewController {
     var switchboard: SwitchBoard?
     var currentStep: RepairStep!
     
+    var nbSteps = 12 {
+        didSet { updateProgress() }
+    }
+    var stepsDone = 0 {
+        didSet { updateProgress() }
+    }
+    
+    lazy var nextPrevView: NextPrevViewController = {
+       return storyboard?.instantiateViewController(withIdentifier: ViewsIdentifier.nextPrevView) as! NextPrevViewController
+    }()
+    
     @IBOutlet var infoLabel: UILabel!
     @IBOutlet var containerView: UIView!
+    @IBOutlet var progressLabel: UILabel!
+    @IBOutlet var progressBar: UIProgressView!
+    
     
     @IBAction func onReset(_ sender: UIButton) {
         delegate?.onReset()
@@ -83,6 +97,8 @@ class MainARViewController: UIViewController {
         guard let s = step else { return }
         
         setLabel(text: s.text)
+        view.addSubview(nextPrevView.view)
+        
         switch s.action {
         case .gotoSwitchBoard:
             return
@@ -104,5 +120,10 @@ class MainARViewController: UIViewController {
         UIView.animate(withDuration: 2, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 6, options: .allowUserInteraction, animations: {
             self.infoLabel.transform = CGAffineTransform.identity
         }, completion: nil)
+    }
+    
+    private func updateProgress() {
+        progressLabel.text = "\(stepsDone)/\(nbSteps)"
+        progressBar.setProgress(Float(nbSteps / stepsDone), animated: true)
     }
 }
