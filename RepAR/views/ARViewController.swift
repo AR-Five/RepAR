@@ -30,13 +30,6 @@ class ARViewController: UIViewController {
        return storyboard?.instantiateViewController(withIdentifier: ViewsIdentifier.mainView) as! MainARViewController
     }()
     
-    func switchTo(vc: UIViewController) {
-        view.addSubview(vc.view)
-        vc.view.frame = view.bounds
-        vc.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        vc.didMove(toParentViewController: self)
-    }
-    
     func setupDelegates() {
         mainAR.delegate = self
         mainTitle.delegate = self

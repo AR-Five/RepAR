@@ -8,16 +8,15 @@
 
 import UIKit
 
+protocol ChoiceViewDelegate {
+    func onTap(id: Int)
+}
+
 class ChoiceViewController: UIViewController {
     
+    var delegate: ChoiceViewDelegate?
     
     @IBOutlet var stackView: UIStackView!
-    
-    @IBOutlet var defaultButton: RoundedButton!
-    
-    @IBAction func onTapButton(_ sender: UIButton) {
-        
-    }
     
     func createButton(title: String, tag: Int) -> RoundedButton {
         let btn = RoundedButton()
@@ -28,8 +27,13 @@ class ChoiceViewController: UIViewController {
         btn.setTitle(title, for: .normal)
         btn.titleLabel?.font = UIFont(name: "Fredoka One", size: 25)
         btn.clipsToBounds = true
+        btn.addTarget(self, action: #selector(self.onButtonPress(sender:)), for: .touchUpInside)
         NSLayoutConstraint(item: btn, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 60).isActive = true
         return btn
+    }
+    
+    @objc func onButtonPress(sender: RoundedButton) {
+        delegate?.onTap(id: sender.tag)
     }
     
     func addButtons(_ btns: [RepairButtonChoice]) {

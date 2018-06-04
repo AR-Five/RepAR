@@ -319,9 +319,6 @@
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="round" value="YES"/>
                                         </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="onTapButton:" destination="lie-AZ-lC6" eventType="touchUpInside" id="uEZ-uS-tSf"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -343,6 +340,78 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="na1-aW-rDO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2078" y="-292"/>
+        </scene>
+        <!--Blur Title View Controller-->
+        <scene sceneID="dEb-iX-LyQ">
+            <objects>
+                <viewController storyboardIdentifier="blurTitle" id="Eyb-5t-5rd" customClass="BlurTitleViewController" customModule="RepAR" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="NuK-eh-sxf">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dTA-QK-hd7">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="00q-yu-Mjd">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HnJ-7V-xV1">
+                                            <rect key="frame" x="8" y="267.33333333333331" width="359" height="43.666666666666686"/>
+                                            <fontDescription key="fontDescription" name="FredokaOne-Regular" family="Fredoka One" pointSize="35"/>
+                                            <color key="textColor" red="0.99215686270000003" green="1" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                            <color key="shadowColor" red="0.28627450980000002" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <size key="shadowOffset" width="0.0" height="1"/>
+                                        </label>
+                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3qt-hy-F7K" customClass="RoundedButton" customModule="RepAR" customModuleProvider="target">
+                                            <rect key="frame" x="137" y="356" width="100" height="100"/>
+                                            <color key="backgroundColor" red="0.99215686270000003" green="1" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="100" id="ICI-6S-FHE"/>
+                                                <constraint firstAttribute="width" constant="100" id="gKo-rk-hnV"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="FredokaOne-Regular" family="Fredoka One" pointSize="35"/>
+                                            <state key="normal" title="OK">
+                                                <color key="titleColor" red="0.28627450980000002" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </state>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="boolean" keyPath="round" value="YES"/>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadiusValue">
+                                                    <real key="value" value="15"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <action selector="onOk:" destination="Eyb-5t-5rd" eventType="touchUpInside" id="WkO-EG-bth"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="3qt-hy-F7K" firstAttribute="centerX" secondItem="00q-yu-Mjd" secondAttribute="centerX" id="4Oj-hr-hlo"/>
+                                        <constraint firstItem="HnJ-7V-xV1" firstAttribute="trailing" secondItem="00q-yu-Mjd" secondAttribute="trailingMargin" id="6ru-wa-BSX"/>
+                                        <constraint firstItem="HnJ-7V-xV1" firstAttribute="leading" secondItem="00q-yu-Mjd" secondAttribute="leadingMargin" id="AeT-ce-RmQ"/>
+                                        <constraint firstItem="3qt-hy-F7K" firstAttribute="top" secondItem="HnJ-7V-xV1" secondAttribute="bottom" constant="45" id="MtT-7v-6f3"/>
+                                        <constraint firstItem="3qt-hy-F7K" firstAttribute="centerY" secondItem="00q-yu-Mjd" secondAttribute="centerY" id="ifW-x0-Fqf"/>
+                                        <constraint firstItem="HnJ-7V-xV1" firstAttribute="centerX" secondItem="00q-yu-Mjd" secondAttribute="centerX" id="l7H-Wy-hbe"/>
+                                    </constraints>
+                                </view>
+                                <blurEffect style="light"/>
+                            </visualEffectView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="dTA-QK-hd7" firstAttribute="leading" secondItem="P9A-Cw-BiQ" secondAttribute="leading" id="5BH-OZ-zk5"/>
+                            <constraint firstItem="dTA-QK-hd7" firstAttribute="top" secondItem="NuK-eh-sxf" secondAttribute="top" id="6K6-BC-zRL"/>
+                            <constraint firstAttribute="bottom" secondItem="dTA-QK-hd7" secondAttribute="bottom" id="ZKx-65-RuQ"/>
+                            <constraint firstItem="dTA-QK-hd7" firstAttribute="trailing" secondItem="P9A-Cw-BiQ" secondAttribute="trailing" id="u6l-UG-mp0"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="P9A-Cw-BiQ"/>
+                    </view>
+                    <connections>
+                        <outlet property="mainTitle" destination="HnJ-7V-xV1" id="N5g-7i-rg0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2lB-bg-FfE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-151" y="359"/>
         </scene>
     </scenes>
     <resources>

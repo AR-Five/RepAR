@@ -16,6 +16,7 @@
 		F0234DB820BF6972004AF740 /* EdgeInsetLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0234DB720BF6972004AF740 /* EdgeInsetLabel.swift */; };
 		F0234DBA20C0A052004AF740 /* ChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0234DB920C0A052004AF740 /* ChoiceViewController.swift */; };
 		F04D5B8C2097DB38001A3570 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F04D5B8B2097DB38001A3570 /* Assets.xcassets */; };
+		F069FA2820C434FD00708CA8 /* BlurTitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F069FA2720C434FD00708CA8 /* BlurTitleViewController.swift */; };
 		F0892A9620A74EC100A1120D /* tableau-cropped.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F0892A9520A74EC000A1120D /* tableau-cropped.jpg */; };
 		F0892A9820A757F200A1120D /* SwitchBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0892A9720A757F200A1120D /* SwitchBoard.swift */; };
 		F0892A9A20A8497B00A1120D /* FredokaOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F0892A9920A8497A00A1120D /* FredokaOne-Regular.ttf */; };
@@ -40,6 +41,7 @@
 		F0234DB720BF6972004AF740 /* EdgeInsetLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeInsetLabel.swift; sourceTree = "<group>"; };
 		F0234DB920C0A052004AF740 /* ChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceViewController.swift; sourceTree = "<group>"; };
 		F04D5B8B2097DB38001A3570 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F069FA2720C434FD00708CA8 /* BlurTitleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurTitleViewController.swift; sourceTree = "<group>"; };
 		F0892A9520A74EC000A1120D /* tableau-cropped.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "tableau-cropped.jpg"; sourceTree = "<group>"; };
 		F0892A9720A757F200A1120D /* SwitchBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchBoard.swift; sourceTree = "<group>"; };
 		F0892A9920A8497A00A1120D /* FredokaOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FredokaOne-Regular.ttf"; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				F0892A9E20A8CC4600A1120D /* TitleViewController.swift */,
 				F0234DB920C0A052004AF740 /* ChoiceViewController.swift */,
 				F0234DAF20BF555A004AF740 /* NavigationViewController.swift */,
+				F069FA2720C434FD00708CA8 /* BlurTitleViewController.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -228,6 +231,7 @@
 				F0892A9D20A8C8BD00A1120D /* RoundedButton.swift in Sources */,
 				F00664C720BCBACC007F6D62 /* RepairActions.swift in Sources */,
 				F0234DB820BF6972004AF740 /* EdgeInsetLabel.swift in Sources */,
+				F069FA2820C434FD00708CA8 /* BlurTitleViewController.swift in Sources */,
 				F003D5A420BAB8BD00D046B2 /* Repair.swift in Sources */,
 				F0234DB620BF65CD004AF740 /* ScaledFont.swift in Sources */,
 				F08F02FB20963364007AAC48 /* Helpers.swift in Sources */,

@@ -18,7 +18,9 @@ class MainARViewController: UIViewController {
     var delegate: MainARDelegate?
     
     var switchboard: SwitchBoard?
-    var currentStep: RepairStep?
+    var currentStep: RepairStep? {
+        didSet { handleCurrentStep() }
+    }
     
     var nbSteps = 12 {
         didSet { updateProgress() }
@@ -35,6 +37,10 @@ class MainARViewController: UIViewController {
         return storyboard?.instantiateViewController(withIdentifier: ViewsIdentifier.choiceView) as! ChoiceViewController
     }()
     
+    lazy var endView: BlurTitleViewController = {
+        return storyboard?.instantiateViewController(withIdentifier: ViewsIdentifier.blurTitle) as! BlurTitleViewController
+    }()
+    
     @IBOutlet var infoLabel: UILabel!
     @IBOutlet var containerView: UIView!
     @IBOutlet var progressLabel: UILabel!
@@ -45,7 +51,6 @@ class MainARViewController: UIViewController {
         delegate?.onReset()
         stepsDone = 0
         currentStep = Repair.run()
-        handleCurrentStep()
     }
     
     @IBAction func onToggleMenu(_ sender: UIButton) {
@@ -59,13 +64,20 @@ class MainARViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         infoLabel.layer.cornerRadius = 15
+        
         navigationView.delegate = self
+        choiceView.delegate = self
+        endView.delegate = self
         
         updateProgress()
         
         currentStep = Repair.run()
-        
-        handleCurrentStep()
+    }
+    
+    func reset() {
+        delegate?.onReset()
+        stepsDone = 0
+        currentStep = Repair.run()
     }
     
     func handleImageDetected(image: ARReferenceImage, node: SCNNode) {
@@ -91,7 +103,6 @@ class MainARViewController: UIViewController {
         switchboard = SwitchBoard(node: node, size: image.physicalSize)
         if let row = switchboard?.rows.first {
             currentStep = Repair.firstCase(row: row)
-            handleCurrentStep()
         }
 //
 //        for row in swb.rows {
@@ -105,23 +116,47 @@ class MainARViewController: UIViewController {
     
     
     func handleCurrentStep() {
+        // reset all hints on the switches
+        switchboard?.hideAllHints()
+        
         guard let step = currentStep else { return }
         handleShowToolsView(type: step.viewType)
         
         setLabel(text: step.text)
         stepsDone += 1
         
+        
         if step.action == .pullLeverUp {
 //            step.currentSwitch?.toggleHand(on: true)
             step.currentSwitch?.toggleArrow(on: true)
+        }
+        
+        if step.action == .askSwitchBroken {
+            step.currentSwitch?.toggleArrow(on: true)
+        }
+        
+        if step.action == .pullAllSimpleSwitchDown {
+            if let rows = switchboard?.rows {
+                for row in rows {
+                    row.switches.forEach { $0.toggleArrow(on: true) }
+                }
+            }
+        }
+        
+        if step.action == .end {
             DispatchQueue.main.async {
-                self.choiceView.addButtons(step.choicesButtonLabel)
+                self.switchTo(vc: self.endView)
+                self.endView.mainTitle.text = step.text
             }
             return
         }
         
-        
-        switchboard?.hideAllHints()
+        // if the view type is choice we build the buttons
+        if step.viewType == .choices {
+            DispatchQueue.main.async {
+                self.choiceView.addButtons(step.choicesButtonLabel)
+            }
+        }
     }
     
     func handleShowToolsView(type: RepairViewType) {
@@ -160,21 +195,73 @@ class MainARViewController: UIViewController {
             self.progressBar.setProgress(Float(self.stepsDone) / Float(self.nbSteps), animated: true)
         }
     }
+    
+    func allSwitchWorking() -> Bool {
+        if let swb = switchboard {
+            if let row = swb.rows.first {
+                let okSwitches = row.switches
+                    .filter { $0.state == SwitchState.normal }
+                    .count
+                return okSwitches == row.switches.count
+            }
+        }
+        return false
+    }
 }
 
 extension MainARViewController: NavigationDelegate {
     func onNext() {
         if let next = currentStep?.getNext() {
             currentStep = next
-            handleCurrentStep()
         }
     }
     
     func onBack() {
         if let prev = currentStep?.prev {
             currentStep = prev
-            handleCurrentStep()
         }
     }
 }
 
+
+extension MainARViewController: ChoiceViewDelegate {
+    func onTap(id: Int) {
+        if let step = currentStep, step.viewType == .choices {
+            if id < step.choicesButtonLabel.count {
+                let choice = step.choicesButtonLabel[id]
+                switch choice.id {
+                case "failed":
+                    step.currentSwitch?.state = .error
+                    currentStep = step.getNextFailed()
+                    break
+                case "ok", "unknown":
+                    step.currentSwitch?.state = .normal
+                    currentStep = step.getNext()
+                    break
+                case "yes":
+                    if step.action == .askSwitchBroken {
+                        currentStep = Repair.resetCaseThree()
+                    }
+                    break
+                case "no":
+                    if step.action == .askSwitchBroken {
+                        if allSwitchWorking() {
+                            currentStep = Repair.endCaseThree()
+                        } else {
+                            currentStep = step.getNext()
+                        }
+                    }
+                    break
+                default:
+                    break
+                }
+            }
+        }
+    }
+}
+
+extension MainARViewController: BlurTitleDelegate {
+    func onOk() {
+        // todo
+    }
+}

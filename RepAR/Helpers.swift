@@ -14,6 +14,7 @@ struct ViewsIdentifier {
     static let titleView = "mainTitle"
     static let navigationView = "navigationView"
     static let choiceView = "choiceView"
+    static let blurTitle = "blurTitle"
 }
 
 extension matrix_float4x4 {
@@ -34,6 +35,15 @@ extension UIView {
         DispatchQueue.main.async {
             view.removeFromSuperview()
         }
+    }
+}
+
+extension UIViewController {
+    func switchTo(vc: UIViewController) {
+        view.addSubview(vc.view)
+        vc.view.frame = view.bounds
+        vc.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        vc.didMove(toParentViewController: self)
     }
 }
 

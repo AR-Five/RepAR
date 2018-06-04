@@ -13,7 +13,7 @@ enum RepairAction {
     case chooseMainSwitch
     case pullAllSimpleSwitchDown
     case pullLeverUp, pullLeverDown
-    case question
+    case askSwitchBroken
     case end
 }
 
@@ -66,6 +66,10 @@ class RepairStep {
         return self.next
     }
     
+    func getNextFailed() -> RepairStep? {
+        return self.nextFailed
+    }
+    
     init(text: String, action: RepairAction, view: RepairViewType = .none) {
         self.text = text
         self.action = action
@@ -91,10 +95,11 @@ class Repair {
     
     static func firstCase(row: SwitchBoardRow) -> RepairStep {
         let liftSelectedSwitch = RepairStep(text: "Levez le disjoncteur selectionné", action: .pullLeverUp, currentSwitch: row.rowSwitch, view: .choices)
+        
         liftSelectedSwitch.choicesButtonLabel = [
-            RepairButtonChoice(id: "down", title: "Il est redescendu"),
-            RepairButtonChoice(id: "up", title: "Il reste levé"),
-            RepairButtonChoice(id: "up", title: "Je ne sais pas"),
+            RepairButtonChoice(id: "failed", title: "Il est redescendu"),
+            RepairButtonChoice(id: "ok", title: "Il reste levé"),
+            RepairButtonChoice(id: "unknown", title: "Je ne sais pas"),
         ]
         
         let endFirstCase = RepairStep(text: "Votre tableau électrique est opérationnel", action: .end)
@@ -105,23 +110,36 @@ class Repair {
     }
     
     static func secondCase(row: SwitchBoardRow) -> RepairStep {
-        let allDown = RepairStep(text: "Abaisser tout les disjoncteurs sélectionnés", action: .pullAllSimpleSwitchDown)
-        let firstOneDown = RepairStep(text: "Remonter le disjoncteur sélectionné", action: .pullLeverUp, currentSwitch: row.rowSwitch)
-        var lastStep = firstOneDown
+        let allDown = RepairStep(text: "Abaisser tout les disjoncteurs sélectionnés", action: .pullAllSimpleSwitchDown, view: .navigation)
+        let firstOneDown = RepairStep(text: "Remonter le disjoncteur sélectionné", action: .pullLeverUp, currentSwitch: row.rowSwitch, view: .navigation)
+        var currentStep = firstOneDown
+        
         for sw in row.switches {
-            let tryOne = RepairStep(text: "Remontez le disjoncteur sélectionné", action: .pullLeverUp, currentSwitch: sw)
-            let choiceSwitch = RepairStep(text: "Ce disjoncteur a-t-il sauté ?", action: .question, currentSwitch: sw)
+            let tryOne = RepairStep(text: "Remontez le disjoncteur sélectionné", action: .pullLeverUp, currentSwitch: sw, view: .navigation)
+            let choiceSwitch = RepairStep(text: "Ce disjoncteur a-t-il sauté ?", action: .askSwitchBroken, currentSwitch: sw, view: .choices)
             choiceSwitch.choicesButtonLabel = [
                 RepairButtonChoice(id: "yes", title: "Oui"),
                 RepairButtonChoice(id: "no", title: "Non"),
             ]
-            lastStep.then(tryOne)
+            
+            currentStep.then(tryOne)
             tryOne.then(choiceSwitch)
             
-            lastStep = choiceSwitch
+            currentStep = choiceSwitch
         }
         
         allDown.then(firstOneDown)
         return allDown
+    }
+    
+    static func endCaseThree() -> RepairStep {
+        return RepairStep(text: "Il s'agissait d'un problème ponctuel qui a mis un peu de temps à se résoudre", action: .end)
+    }
+    
+    static func resetCaseThree() -> RepairStep {
+        let resetSingleSw = RepairStep(text: "Abaisser ce disjoncteur", action: .pullLeverDown, view: .navigation)
+        let mainSwUp = RepairStep(text: "Remonter ce disjoncteur", action: .pullLeverUp, view: .navigation)
+        resetSingleSw.then(mainSwUp)
+        return resetSingleSw
     }
 }

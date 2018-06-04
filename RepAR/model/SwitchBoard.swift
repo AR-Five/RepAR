@@ -13,6 +13,10 @@ enum SwitchType {
     case rowSwitch, singleSwitch
 }
 
+enum SwitchState {
+    case normal, error, unknown
+}
+
 enum SwitchStatus {
     case fucked
 }
@@ -21,6 +25,8 @@ class Switch {
     var dimension: CGSize
     var position: CGPoint
     var type: SwitchType
+    
+    var state: SwitchState = .unknown
     
     var displayArrow = false
     
@@ -140,7 +146,7 @@ class SwitchBoard {
     func setup() {
         topOffset = 0.06
         mainSwitchSize = CGSize(width: 0.025, height: 0.035)
-        singleSwitchSize = CGSize(width: 0.01, height: 0.035)
+        singleSwitchSize = CGSize(width: 0.013, height: 0.035)
         
         var row = SwitchBoardRow()
         addSwitch(type: .rowSwitch, to: &row)
@@ -151,7 +157,7 @@ class SwitchBoard {
         addSwitch(type: .singleSwitch, to: &row, position: 4)
         addSwitch(type: .singleSwitch, to: &row, position: 5)
         addSwitch(type: .singleSwitch, to: &row, position: 6)
-        addSwitch(type: .singleSwitch, to: &row, position: 9)
+        addSwitch(type: .singleSwitch, to: &row, position: 10)
         
         add(row: row)
     }
@@ -175,7 +181,7 @@ class SwitchBoard {
     
     func addSwitch(type: SwitchType, to row: inout SwitchBoardRow, position: CGFloat = 0) {
         if type == .singleSwitch {
-            let origin = CGPoint(x: mainSwitchSize.width + singleSwitchSize.width * position, y: topOffset)
+            let origin = CGPoint(x: 0.002 + mainSwitchSize.width + singleSwitchSize.width * position, y: topOffset)
             row.switches.append(Switch(dimension: singleSwitchSize, position: origin, type: .singleSwitch))
         }
         if type == .rowSwitch {
