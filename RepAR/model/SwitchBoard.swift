@@ -17,8 +17,8 @@ enum SwitchState {
     case normal, error, unknown
 }
 
-enum SwitchStatus {
-    case fucked
+enum Gear {
+    case lightBulb, socket
 }
 
 class Switch {
@@ -26,12 +26,15 @@ class Switch {
     var position: CGPoint
     var type: SwitchType
     
+    var attachedGear = [Gear]()
+    
     var state: SwitchState = .unknown
     
     var displayArrow = false
     
     var arrowNode: SCNNode?
     var handNode: SCNNode?
+    var statusNode: SCNNode?
     
     init(dimension: CGSize, position: CGPoint, type: SwitchType) {
         self.dimension = dimension
@@ -46,16 +49,42 @@ class Switch {
     }
     
     func toggleArrow(on: Bool) {
-        arrowNode?.isHidden = !on
-        if !arrowNode!.isHidden {
+        guard let aNode = arrowNode else {return}
+        aNode.isHidden = !on
+        if !aNode.isHidden {
             //            arrowNode?.runAction(hoverAction())
-            arrowNode?.runAction(SCNAction.group([hoverAction(), rotateAction()]))
+            aNode.runAction(SCNAction.group([hoverAction(), rotateAction()]))
         }
     }
     
+    func toggleStatus(on: Bool) {
+        guard let sNode = statusNode else { return }
+        sNode.isHidden = !on
+        if !sNode.isHidden {
+            updateStatus()
+        }
+    }
+    
+    func updateStatus() {
+        guard let sNode = statusNode else { return }
+        var color = #colorLiteral(red: 0.9921568627, green: 1, blue: 0.1333333333, alpha: 1)
+        switch state {
+        case .error:
+            color = UIColor.red
+            break
+        case .unknown:
+            color = #colorLiteral(red: 0.2862745098, green: 0.2862745098, blue: 0.2862745098, alpha: 1)
+            break
+        default:
+            break
+        }
+        sNode.geometry?.materials.first?.diffuse.contents = color
+    }
+    
     func toggleHand(on: Bool) {
-        handNode?.isHidden = !on
-        if !handNode!.isHidden {
+        guard let hNode = handNode else { return }
+        hNode.isHidden = !on
+        if !hNode.isHidden {
             //handNode?.childNode(withName: "Armature", recursively: true)?.addAnimation(animations["arm-down"]!, forKey: "arm-down")
         }
     }
@@ -63,6 +92,20 @@ class Switch {
     func initAllObjects(node: SCNNode, size: CGSize) {
         createArrow(node: node, size: size)
         createHand(node: node, size: size)
+        createStatusBall(node: node, size: size)
+    }
+    
+    
+    func createStatusBall(node: SCNNode, size: CGSize) {
+        let ball = SCNSphere(radius: 0.005)
+        let defaultColor = #colorLiteral(red: 0.9921568627, green: 1, blue: 0.1333333333, alpha: 1)
+        ball.materials.first?.diffuse.contents = defaultColor
+        ball.materials.first?.specular.contents = UIColor.lightGray
+        let ballNode = SCNNode(geometry: ball)
+        ballNode.position = ARHelpers.setPosition(labelPosition(offset: -0.005), forSize: size)
+        node.addChildNode(ballNode)
+        ballNode.isHidden = true
+        self.statusNode = ballNode
     }
     
     func createArrow(node: SCNNode, size: CGSize) {

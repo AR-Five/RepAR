@@ -14,6 +14,7 @@ import VideoToolbox
 class ARViewController: UIViewController {
     
     @IBOutlet var sceneView: ARSCNView!
+    @IBOutlet var mainView: UIView!
     
     private let processQueue = DispatchQueue.global(qos: .userInitiated)
     
@@ -40,6 +41,9 @@ class ARViewController: UIViewController {
         super.viewDidLoad()
         
         setupDelegates()
+        
+//        mainView.show(view: mainTitle.view)
+        
         switchTo(vc: mainTitle)
         
         let tapgesture = UITapGestureRecognizer(target: self, action: #selector(self.tapGesture))
@@ -164,6 +168,10 @@ extension ARViewController: TitleViewDelegate {
 }
 
 extension ARViewController: MainARDelegate {
+    func onDisplayMenu(sender: UIViewController) {
+        performSegue(withIdentifier: "popoverMenu", sender: sender)
+    }
+    
     func onReset() {
         if let imageAnchor = imageDetectedAnchor {
             sceneView.session.remove(anchor: imageAnchor)
@@ -174,7 +182,9 @@ extension ARViewController: MainARDelegate {
                 node.removeFromParentNode()
             }
         }
+        switchTo(vc: mainTitle)
     }
+    
 }
 
 // MARK: - ARSCNViewDelegate

@@ -11,6 +11,7 @@ import ARKit
 
 protocol MainARDelegate {
     func onReset()
+    func onDisplayMenu(sender: UIViewController)
 }
 
 class MainARViewController: UIViewController {
@@ -47,14 +48,10 @@ class MainARViewController: UIViewController {
     @IBOutlet var progressBar: UIProgressView!
     
     
-    @IBAction func onReset(_ sender: UIButton) {
-        delegate?.onReset()
-        stepsDone = 0
-        currentStep = Repair.run()
-    }
-    
     @IBAction func onToggleMenu(_ sender: UIButton) {
-        // TODO: to implement
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "popoverMenu", sender: self)
+        }
     }
     
     @IBAction func onToggleInfo(_ sender: UIButton) {
@@ -119,20 +116,24 @@ class MainARViewController: UIViewController {
         // reset all hints on the switches
         switchboard?.hideAllHints()
         
+        switchboard?.rows.forEach {
+            $0.switches.forEach {
+                $0.updateStatus()
+            }
+        }
+        
         guard let step = currentStep else { return }
         handleShowToolsView(type: step.viewType)
         
         setLabel(text: step.text)
         stepsDone += 1
         
-        
-        if step.action == .pullLeverUp {
-//            step.currentSwitch?.toggleHand(on: true)
-            step.currentSwitch?.toggleArrow(on: true)
+        if let cSwitch = step.currentSwitch, cSwitch.type == .singleSwitch {
+            step.currentSwitch?.toggleStatus(on: true)
         }
         
-        if step.action == .askSwitchBroken {
-            step.currentSwitch?.toggleArrow(on: true)
+        if let currentSwitch = step.currentSwitch, step.showSwitchIndicator {
+            currentSwitch.toggleArrow(on: true)
         }
         
         if step.action == .pullAllSimpleSwitchDown {
@@ -196,16 +197,30 @@ class MainARViewController: UIViewController {
         }
     }
     
-    func allSwitchWorking() -> Bool {
-        if let swb = switchboard {
-            if let row = swb.rows.first {
-                let okSwitches = row.switches
-                    .filter { $0.state == SwitchState.normal }
-                    .count
-                return okSwitches == row.switches.count
-            }
+    func checkedAllSwitch() -> Bool {
+        if let row = switchboard?.rows.first {
+            return row.switches
+                .filter { $0.state == SwitchState.unknown }
+                .count == 0
         }
         return false
+    }
+    
+    func allSwitchWorking() -> Bool {
+        if let row = switchboard?.rows.first {
+            return row.switches
+                .filter { $0.state == SwitchState.error }
+                .count == 0
+        }
+        return false
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "popoverMenu" {
+            if let ctr = segue.destination.popoverPresentationController {
+                ctr.delegate = self
+            }
+        }
     }
 }
 
@@ -229,6 +244,12 @@ extension MainARViewController: ChoiceViewDelegate {
         if let step = currentStep, step.viewType == .choices {
             if id < step.choicesButtonLabel.count {
                 let choice = step.choicesButtonLabel[id]
+                
+                if let nextStep = choice.step {
+                    currentStep = nextStep
+                    return
+                }
+                
                 switch choice.id {
                 case "failed":
                     step.currentSwitch?.state = .error
@@ -239,21 +260,33 @@ extension MainARViewController: ChoiceViewDelegate {
                     currentStep = step.getNext()
                     break
                 case "yes":
-                    if step.action == .askSwitchBroken {
-                        currentStep = Repair.resetCaseThree()
+                    if step.questionId == "case2-mainswitch-broken" {
+                        step.currentSwitch?.state = .error
+                        if !checkedAllSwitch() {
+                            currentStep = step.getNextFailed()
+                            return
+                        }
                     }
                     break
                 case "no":
-                    if step.action == .askSwitchBroken {
-                        if allSwitchWorking() {
-                            currentStep = Repair.endCaseThree()
-                        } else {
+                    if step.questionId == "case2-mainswitch-broken" {
+                        step.currentSwitch?.state = .normal
+                        if !checkedAllSwitch() {
                             currentStep = step.getNext()
+                            return
                         }
                     }
                     break
                 default:
                     break
+                }
+                
+                if step.questionId == "case2-mainswitch-broken", checkedAllSwitch() {
+                    if allSwitchWorking() {
+                        currentStep = Repair.endCaseTwo() // everything working
+                        return
+                    }
+                    currentStep = Repair.askEquipment(prev: step, row: switchboard!.rows.first!)
                 }
             }
         }
@@ -262,6 +295,13 @@ extension MainARViewController: ChoiceViewDelegate {
 
 extension MainARViewController: BlurTitleDelegate {
     func onOk() {
-        // todo
+        containerView.hide(view: endView.view)
+        reset()
+    }
+}
+
+extension MainARViewController: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
     }
 }

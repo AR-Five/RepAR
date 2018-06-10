@@ -26,6 +26,7 @@ extension matrix_float4x4 {
 extension UIView {
     func show(view: UIView) {
         DispatchQueue.main.async {
+            self.subviews.forEach { $0.removeFromSuperview() }
             self.addSubview(view)
             view.frame = self.bounds
         }
@@ -48,18 +49,18 @@ extension UIViewController {
 }
 
 extension CAAnimation {
-    class func animationWithSceneNamed(_ name: String) -> CAAnimation? {
-        var animation: CAAnimation?
-        if let scene = SCNScene(named: name) {
-            scene.rootNode.enumerateChildNodes({ (child, stop) in
-                if child.animationKeys.count > 0 {
-                    animation = child.animation(forKey: child.animationKeys.first!)
-                    stop.initialize(to: true)
-                }
-            })
-        }
-        return animation
-    }
+//    class func animationWithSceneNamed(_ name: String) -> CAAnimation? {
+//        var animation: CAAnimation?
+//        if let scene = SCNScene(named: name) {
+//            scene.rootNode.enumerateChildNodes({ (child, stop) in
+//                if child.animationKeys.count > 0 {
+//                    animation = child.animation(forKey: child.animationKeys.first!)
+//                    stop.initialize(to: true)
+//                }
+//            })
+//        }
+//        return animation
+//    }
 }
 
 class ARHelpers {

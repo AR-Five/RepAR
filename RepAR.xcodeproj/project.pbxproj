@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		F003D5A420BAB8BD00D046B2 /* Repair.swift in Sources */ = {isa = PBXBuildFile; fileRef = F003D5A320BAB8BD00D046B2 /* Repair.swift */; };
-		F00664C720BCBACC007F6D62 /* RepairActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00664C620BCBACC007F6D62 /* RepairActions.swift */; };
 		F0234DB020BF555A004AF740 /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0234DAF20BF555A004AF740 /* NavigationViewController.swift */; };
 		F0234DB220BF5779004AF740 /* MainARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0234DB120BF5779004AF740 /* MainARViewController.swift */; };
 		F0234DB420BF6514004AF740 /* fredokaFont.plist in Resources */ = {isa = PBXBuildFile; fileRef = F0234DB320BF6514004AF740 /* fredokaFont.plist */; };
@@ -22,18 +21,18 @@
 		F0892A9A20A8497B00A1120D /* FredokaOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F0892A9920A8497A00A1120D /* FredokaOne-Regular.ttf */; };
 		F0892A9D20A8C8BD00A1120D /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0892A9C20A8C8BD00A1120D /* RoundedButton.swift */; };
 		F0892A9F20A8CC4600A1120D /* TitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0892A9E20A8CC4600A1120D /* TitleViewController.swift */; };
-		F08F02FB20963364007AAC48 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08F02FA20963364007AAC48 /* Helpers.swift */; };
+		F08F02FB20963364007AAC48 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08F02FA20963364007AAC48 /* Extensions.swift */; };
 		F0B2CD4820A602B700A225E9 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = F0B2CD4720A602B700A225E9 /* .gitignore */; };
 		F0D69BFB206D02C500581344 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D69BFA206D02C500581344 /* AppDelegate.swift */; };
 		F0D69BFD206D02C500581344 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F0D69BFC206D02C500581344 /* art.scnassets */; };
 		F0D69BFF206D02C500581344 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D69BFE206D02C500581344 /* ARViewController.swift */; };
 		F0D69C02206D02C500581344 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F0D69C00206D02C500581344 /* Main.storyboard */; };
 		F0D69C07206D02C500581344 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F0D69C05206D02C500581344 /* LaunchScreen.storyboard */; };
+		F0F2E46420CADC700016F630 /* RepairActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F2E46320CADC700016F630 /* RepairActions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		F003D5A320BAB8BD00D046B2 /* Repair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repair.swift; sourceTree = "<group>"; };
-		F00664C620BCBACC007F6D62 /* RepairActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepairActions.swift; sourceTree = "<group>"; };
 		F0234DAF20BF555A004AF740 /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
 		F0234DB120BF5779004AF740 /* MainARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainARViewController.swift; sourceTree = "<group>"; };
 		F0234DB320BF6514004AF740 /* fredokaFont.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = fredokaFont.plist; sourceTree = "<group>"; };
@@ -47,7 +46,7 @@
 		F0892A9920A8497A00A1120D /* FredokaOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FredokaOne-Regular.ttf"; sourceTree = "<group>"; };
 		F0892A9C20A8C8BD00A1120D /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		F0892A9E20A8CC4600A1120D /* TitleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleViewController.swift; sourceTree = "<group>"; };
-		F08F02FA20963364007AAC48 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		F08F02FA20963364007AAC48 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		F0B2CD4720A602B700A225E9 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		F0D69BF7206D02C500581344 /* RepAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RepAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0D69BFA206D02C500581344 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -56,6 +55,7 @@
 		F0D69C01206D02C500581344 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F0D69C06206D02C500581344 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F0D69C08206D02C500581344 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F0F2E46320CADC700016F630 /* RepairActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepairActions.swift; sourceTree = "<group>"; };
 		F0F6649E20A652C400352698 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = "/Users/Guillaume/Documents/Scolaire/A3/project/RepAR-opencv/README.md"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -75,7 +75,7 @@
 			children = (
 				F0892A9720A757F200A1120D /* SwitchBoard.swift */,
 				F003D5A320BAB8BD00D046B2 /* Repair.swift */,
-				F00664C620BCBACC007F6D62 /* RepairActions.swift */,
+				F0F2E46320CADC700016F630 /* RepairActions.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -135,7 +135,7 @@
 				F0234DAC20BF54F7004AF740 /* model */,
 				F0234DAD20BF5518004AF740 /* components */,
 				F0234DAE20BF5528004AF740 /* views */,
-				F08F02FA20963364007AAC48 /* Helpers.swift */,
+				F08F02FA20963364007AAC48 /* Extensions.swift */,
 				F0234DB520BF65CD004AF740 /* ScaledFont.swift */,
 				F0234DB720BF6972004AF740 /* EdgeInsetLabel.swift */,
 				F0D69C00206D02C500581344 /* Main.storyboard */,
@@ -229,12 +229,12 @@
 			files = (
 				F0D69BFF206D02C500581344 /* ARViewController.swift in Sources */,
 				F0892A9D20A8C8BD00A1120D /* RoundedButton.swift in Sources */,
-				F00664C720BCBACC007F6D62 /* RepairActions.swift in Sources */,
+				F0F2E46420CADC700016F630 /* RepairActions.swift in Sources */,
 				F0234DB820BF6972004AF740 /* EdgeInsetLabel.swift in Sources */,
 				F069FA2820C434FD00708CA8 /* BlurTitleViewController.swift in Sources */,
 				F003D5A420BAB8BD00D046B2 /* Repair.swift in Sources */,
 				F0234DB620BF65CD004AF740 /* ScaledFont.swift in Sources */,
-				F08F02FB20963364007AAC48 /* Helpers.swift in Sources */,
+				F08F02FB20963364007AAC48 /* Extensions.swift in Sources */,
 				F0892A9820A757F200A1120D /* SwitchBoard.swift in Sources */,
 				F0234DB220BF5779004AF740 /* MainARViewController.swift in Sources */,
 				F0234DBA20C0A052004AF740 /* ChoiceViewController.swift in Sources */,
