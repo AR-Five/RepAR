@@ -90,20 +90,22 @@ class Repair {
             let askGear = RepairStep(text: "A quel(s) appareil ce disjoncteur est-il relié ?", action: .askGearConnected, view: .choices)
             askGear.currentSwitch = sw
             askGear.choicesButtonLabel = [
-                RepairButtonChoice(id: "lightbulb", title: "Ampoule", step: lightbulbCase(sw: sw)),
+                RepairButtonChoice(id: "lightbulb", title: "Ampoule", step: lightbulbCase(askGear)),
                 RepairButtonChoice(id: "socket", title: "Prise"),
             ]
+            
             current.then(askGear)
             current = askGear
         }
         return prev.getNext()
     }
     
-    static func lightbulbCase(sw: Switch) -> RepairStep {
+    static func lightbulbCase(_ step: RepairStep) -> RepairStep {
         let changeLightBulb = RepairStep(text: "Changez l'ampoule", action: .changeLightBulb, view: .navigation)
         let pullUpMain = RepairStep(text: "Remontez ce disjoncteur", action: .pullLeverUp, view: .navigation)
-        let end = RepairStep(text: "Terminé", action: .end, view: .none)
-        pullUpMain.currentSwitch = sw
+        let end = RepairStep(text: "Terminé", action: .endContinue, view: .none)
+        pullUpMain.currentSwitch = step.currentSwitch
+        step.then(changeLightBulb)
         changeLightBulb.then(pullUpMain)
         pullUpMain.then(end)
         return changeLightBulb

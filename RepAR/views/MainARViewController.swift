@@ -144,7 +144,7 @@ class MainARViewController: UIViewController {
             }
         }
         
-        if step.action == .end {
+        if step.action == .end || step.action == .endContinue {
             DispatchQueue.main.async {
                 self.switchTo(vc: self.endView)
                 self.endView.mainTitle.text = step.text
@@ -296,6 +296,19 @@ extension MainARViewController: ChoiceViewDelegate {
 extension MainARViewController: BlurTitleDelegate {
     func onOk() {
         containerView.hide(view: endView.view)
+        
+        if let step = currentStep, step.action == .endContinue {
+            currentStep?.prev?.currentSwitch?.state = .normal
+            if let next = Repair.askEquipment(prev: currentStep!, row: switchboard!.rows.first!) {
+                currentStep?.then(next)
+                currentStep = currentStep?.getNext()
+            } else {
+                reset()
+            }
+            return
+        }
+        
+        
         reset()
     }
 }

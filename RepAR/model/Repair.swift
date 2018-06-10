@@ -15,7 +15,7 @@ enum RepairAction {
     case askSwitchBroken, askGearConnected
     case changeLightBulb
     case unplug
-    case end
+    case end, endContinue
 }
 
 enum RepairActionStatus {
@@ -53,8 +53,8 @@ class RepairStep {
     var choicesButtonLabel = [RepairButtonChoice]()
     var questionId = ""
     
-    var nextButtonLabel: String? = "Suivant"
-    var prevButtonLabel: String? = "Retour"
+    var nextButtonLabel = "Suivant"
+    var prevButtonLabel = "Retour"
     
     // previous task
     var prev: RepairStep?
