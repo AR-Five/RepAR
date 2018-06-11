@@ -11,11 +11,12 @@ import UIKit
 class Repair {
     
     static func run() -> RepairStep {
-        let goToPanel = RepairStep(text: "Allez à votre panneau électrique", action: .gotoSwitchBoard)
-        
+        let info = RepairStep(text: "Dirigez-vous vers votre tableau électrique", action: .gotoSwitchBoard, view: .full)
+        let goToPanel = RepairStep(text: "Visez votre tableau électrique", action: .gotoSwitchBoard)
         //let chooseMainSwitch = RepairStep(text: "Touchez le/les disjoncteur(s) dont le levier est abaissé", action: .chooseMainSwitch)
         //goToPanel.then(chooseMainSwitch)
-        return goToPanel
+        info.then(goToPanel)
+        return info
     }
     
     static func firstCase(row: SwitchBoardRow) -> RepairStep {
@@ -103,10 +104,11 @@ class Repair {
     static func lightbulbCase(_ step: RepairStep) -> RepairStep {
         let changeLightBulb = RepairStep(text: "Changez l'ampoule", action: .changeLightBulb, view: .navigation)
         let pullUpMain = RepairStep(text: "Remontez ce disjoncteur", action: .pullLeverUp, view: .navigation)
-        let end = RepairStep(text: "Terminé", action: .endContinue, view: .none)
+        let end = RepairStep(text: "Appelez un électricien", action: .endContinue, view: .none)
         pullUpMain.currentSwitch = step.currentSwitch
         step.then(changeLightBulb)
         changeLightBulb.then(pullUpMain)
+        pullUpMain.questionId = "end-change-equip"
         pullUpMain.then(end)
         return changeLightBulb
     }

@@ -50,7 +50,8 @@ class MainARViewController: UIViewController {
     
     @IBAction func onToggleMenu(_ sender: UIButton) {
         DispatchQueue.main.async {
-            self.performSegue(withIdentifier: "popoverMenu", sender: self)
+//            self.performSegue(withIdentifier: "popoverMenu", sender: self)
+            self.reset()
         }
     }
     
@@ -126,7 +127,7 @@ class MainARViewController: UIViewController {
         handleShowToolsView(type: step.viewType)
         
         setLabel(text: step.text)
-        stepsDone += 1
+//        stepsDone += 1
         
         if let cSwitch = step.currentSwitch, cSwitch.type == .singleSwitch {
             step.currentSwitch?.toggleStatus(on: true)
@@ -135,7 +136,7 @@ class MainARViewController: UIViewController {
         if let currentSwitch = step.currentSwitch, step.showSwitchIndicator {
             currentSwitch.toggleArrow(on: true)
         }
-        
+
         if step.action == .pullAllSimpleSwitchDown {
             if let rows = switchboard?.rows {
                 for row in rows {
@@ -171,6 +172,18 @@ class MainARViewController: UIViewController {
             containerView.show(view: choiceView.view)
         } else {
             containerView.hide(view: choiceView.view)
+        }
+        
+        if type == .full {
+            DispatchQueue.main.async {
+                self.switchTo(vc: self.endView)
+                self.endView.mainTitle.text = self.currentStep?.text
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.endView.view.removeFromSuperview()
+            }
+
         }
         
     }
@@ -297,16 +310,24 @@ extension MainARViewController: BlurTitleDelegate {
     func onOk() {
         containerView.hide(view: endView.view)
         
-        if let step = currentStep, step.action == .endContinue {
-            currentStep?.prev?.currentSwitch?.state = .normal
-            if let next = Repair.askEquipment(prev: currentStep!, row: switchboard!.rows.first!) {
-                currentStep?.then(next)
-                currentStep = currentStep?.getNext()
-            } else {
-                reset()
+        if let step = currentStep {
+            if step.action == .endContinue {
+                currentStep?.prev?.currentSwitch?.state = .normal
+                if let next = Repair.askEquipment(prev: currentStep!, row: switchboard!.rows.first!) {
+                    currentStep?.then(next)
+                    currentStep = currentStep?.getNext()
+                } else {
+                    reset()
+                }
+                return
             }
-            return
+            
+            if step.action == .gotoSwitchBoard {
+                currentStep = step.getNext()
+                return
+            }
         }
+        
         
         
         reset()

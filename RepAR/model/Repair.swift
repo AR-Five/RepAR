@@ -23,7 +23,7 @@ enum RepairActionStatus {
 }
 
 enum RepairViewType {
-    case navigation, choices, none
+    case navigation, choices, full, none
 }
 
 struct RepairButtonChoice {

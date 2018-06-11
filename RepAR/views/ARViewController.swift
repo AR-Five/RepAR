@@ -46,6 +46,8 @@ class ARViewController: UIViewController {
         
         switchTo(vc: mainTitle)
         
+//        present(mainTitle, animated: true, completion: nil)
+        
         let tapgesture = UITapGestureRecognizer(target: self, action: #selector(self.tapGesture))
         
         view.addGestureRecognizer(tapgesture)
@@ -182,6 +184,7 @@ extension ARViewController: MainARDelegate {
                 node.removeFromParentNode()
             }
         }
+        
         switchTo(vc: mainTitle)
     }
     
