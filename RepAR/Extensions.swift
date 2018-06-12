@@ -64,6 +64,36 @@ extension UIViewController {
     }
 }
 
+func toggleTorch(on: Bool) {
+    guard let device = AVCaptureDevice.default(for: .video) else { return }
+    
+    if device.hasTorch {
+        do {
+            try device.lockForConfiguration()
+            
+            if on {
+                device.torchMode = .on
+            } else {
+                device.torchMode = .off
+            }
+            
+            device.unlockForConfiguration()
+        } catch {
+            print("Torch could not be used")
+        }
+    } else {
+        print("Torch is not available")
+    }
+}
+
+func isTorchEnabled() -> Bool {
+    guard let device = AVCaptureDevice.default(for: .video) else { return false }
+    if device.hasTorch {
+        return device.torchMode == .on
+    }
+    return false
+}
+
 extension CAAnimation {
 //    class func animationWithSceneNamed(_ name: String) -> CAAnimation? {
 //        var animation: CAAnimation?

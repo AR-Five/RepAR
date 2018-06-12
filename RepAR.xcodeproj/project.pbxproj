@@ -24,6 +24,7 @@
 		F08F02FB20963364007AAC48 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08F02FA20963364007AAC48 /* Extensions.swift */; };
 		F0B2CD4820A602B700A225E9 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = F0B2CD4720A602B700A225E9 /* .gitignore */; };
 		F0B8614120CFFD9300C0D8C9 /* MenuPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B8614020CFFD9300C0D8C9 /* MenuPopoverViewController.swift */; };
+		F0B8614320D044A600C0D8C9 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B8614220D044A600C0D8C9 /* HelpViewController.swift */; };
 		F0D69BFB206D02C500581344 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D69BFA206D02C500581344 /* AppDelegate.swift */; };
 		F0D69BFD206D02C500581344 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F0D69BFC206D02C500581344 /* art.scnassets */; };
 		F0D69BFF206D02C500581344 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D69BFE206D02C500581344 /* ARViewController.swift */; };
@@ -50,6 +51,7 @@
 		F08F02FA20963364007AAC48 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		F0B2CD4720A602B700A225E9 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		F0B8614020CFFD9300C0D8C9 /* MenuPopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuPopoverViewController.swift; sourceTree = "<group>"; };
+		F0B8614220D044A600C0D8C9 /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
 		F0D69BF7206D02C500581344 /* RepAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RepAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0D69BFA206D02C500581344 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F0D69BFC206D02C500581344 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 				F0234DB920C0A052004AF740 /* ChoiceViewController.swift */,
 				F0234DAF20BF555A004AF740 /* NavigationViewController.swift */,
 				F069FA2720C434FD00708CA8 /* BlurTitleViewController.swift */,
+				F0B8614220D044A600C0D8C9 /* HelpViewController.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -241,6 +244,7 @@
 				F0892A9820A757F200A1120D /* SwitchBoard.swift in Sources */,
 				F0234DB220BF5779004AF740 /* MainARViewController.swift in Sources */,
 				F0234DBA20C0A052004AF740 /* ChoiceViewController.swift in Sources */,
+				F0B8614320D044A600C0D8C9 /* HelpViewController.swift in Sources */,
 				F0234DB020BF555A004AF740 /* NavigationViewController.swift in Sources */,
 				F0D69BFB206D02C500581344 /* AppDelegate.swift in Sources */,
 				F0B8614120CFFD9300C0D8C9 /* MenuPopoverViewController.swift in Sources */,

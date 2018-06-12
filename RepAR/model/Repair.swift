@@ -26,6 +26,20 @@ enum RepairViewType {
     case navigation, choices, full, none
 }
 
+struct RepairHelp {
+    let text: String
+    let image: UIImage?
+    init(text: String) {
+        self.text = text
+        self.image = nil
+    }
+    
+    init(text: String, image: UIImage) {
+        self.text = text
+        self.image = image
+    }
+}
+
 struct RepairButtonChoice {
     let id: String
     let title: String
@@ -43,7 +57,7 @@ struct RepairButtonChoice {
 class RepairStep {
     let text: String
     
-    var helpText = "Pas d'aide"
+    var help: RepairHelp = RepairHelp(text: "Pas d'aide disponible")
     
     let action: RepairAction
     var viewType: RepairViewType = .none

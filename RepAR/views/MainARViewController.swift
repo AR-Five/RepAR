@@ -76,6 +76,12 @@ class MainARViewController: UIViewController {
         delegate?.onReset()
         stepsDone = 0
         currentStep = Repair.run()
+        switchboard = nil
+    }
+    
+    func toggleProgress(show: Bool) {
+        progressLabel.isHidden = !show
+        progressBar.isHidden = !show
     }
     
     func handleImageDetected(image: ARReferenceImage, node: SCNNode) {
@@ -233,18 +239,33 @@ class MainARViewController: UIViewController {
         return false
     }
     
+    func setupPopover(segue: UIStoryboardSegue) {
+        if let ctr = segue.destination.popoverPresentationController {
+            ctr.delegate = self
+            
+            var origin = ctr.sourceRect.origin
+            origin.x = ctr.sourceView!.frame.width / 2
+            origin.y = ctr.sourceView!.frame.height
+            ctr.sourceRect = CGRect(origin: origin, size: .zero)
+        }
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "popoverMenu" {
-            let dest = segue.destination
-            dest.preferredContentSize = CGSize(width: 400, height: 300)
-            if let ctr = segue.destination.popoverPresentationController {
-                ctr.delegate = self
-                
-                var origin = ctr.sourceRect.origin
-                origin.x = ctr.sourceView!.frame.width / 2
-                origin.y = ctr.sourceView!.frame.height
-                ctr.sourceRect = CGRect(origin: origin, size: .zero)
-            }
+            let dest = segue.destination as? MenuPopoverViewController
+            
+            dest?.preferredContentSize = CGSize(width: 400, height: 300)
+            dest?.delegate = self
+            setupPopover(segue: segue)
+        }
+        
+        if segue.identifier == "popoverHelp" {
+            let dest = segue.destination as? HelpViewController
+            
+//            dest?.help = RepairHelp(text: "yolo", image: #imageLiteral(resourceName: "logo"))
+            dest?.help = currentStep?.help
+            dest?.preferredContentSize = CGSize(width: 400, height: 500)
+            setupPopover(segue: segue)
         }
     }
 }
@@ -382,7 +403,10 @@ extension MainARViewController: UIPopoverPresentationControllerDelegate {
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
-    
-    
-    
+}
+
+extension MainARViewController: MenuDelegate {
+    func onTapHome() {
+        reset()
+    }
 }

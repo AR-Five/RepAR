@@ -93,8 +93,9 @@ class ARViewController: UIViewController {
         
         // Run the view's session
         configuration.planeDetection = [.horizontal, .vertical]
+        
         sceneView.session.delegate = self
-        sceneView.session.run(configuration)
+        sceneView.session.run(configuration, options: [.removeExistingAnchors])
     }
     
     func initARSessionImages() {
@@ -108,28 +109,6 @@ class ARViewController: UIViewController {
         configuration.planeDetection = [.horizontal, .vertical]
         configuration.detectionImages = referenceImages
         sceneView.session.run(configuration)
-    }
-    
-    func toggleTorch(on: Bool) {
-        guard let device = AVCaptureDevice.default(for: .video) else { return }
-        
-        if device.hasTorch {
-            do {
-                try device.lockForConfiguration()
-                
-                if on {
-                    device.torchMode = .on
-                } else {
-                    device.torchMode = .off
-                }
-                
-                device.unlockForConfiguration()
-            } catch {
-                print("Torch could not be used")
-            }
-        } else {
-            print("Torch is not available")
-        }
     }
     
     @objc func tapGesture(tap: UITapGestureRecognizer) {
@@ -178,9 +157,10 @@ extension ARViewController: MainARDelegate {
     }
     
     func onReset() {
+        
+        initARSessionDefault()
         mainAR.remove()
         add(self.mainTitle)
-        initARSessionDefault()
 //        switchTo(vc: mainTitle)
     }
     

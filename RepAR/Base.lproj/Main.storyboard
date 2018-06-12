@@ -133,7 +133,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LwL-eX-E69" customClass="RoundedButton" customModule="RepAR" customModuleProvider="target">
-                                <rect key="frame" x="16" y="154.33333333333334" width="343" height="50"/>
+                                <rect key="frame" x="16" y="154.66666666666666" width="343" height="50"/>
                                 <color key="backgroundColor" red="0.28627450980000002" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="edT-Yp-mgH"/>
@@ -148,9 +148,12 @@
                                         <real key="value" value="1"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="onTapHome:" destination="bG9-hB-AWc" eventType="touchUpInside" id="4U4-da-fCU"/>
+                                </connections>
                             </button>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aq4-w2-zuh" customClass="RoundedButton" customModule="RepAR" customModuleProvider="target">
-                                <rect key="frame" x="16" y="224.33333333333334" width="343" height="50.000000000000028"/>
+                                <rect key="frame" x="16" y="224.66666666666666" width="343" height="49.999999999999972"/>
                                 <color key="backgroundColor" red="0.28627450980000002" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="62I-z7-B8j"/>
@@ -165,6 +168,9 @@
                                         <real key="value" value="1"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="onToggleTorch:" destination="bG9-hB-AWc" eventType="touchUpInside" id="4nl-vp-Ghg"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -181,11 +187,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="2CQ-aE-bwz"/>
                     </view>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="torchButton" destination="aq4-w2-zuh" id="aOF-jm-RyP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fxc-eX-AE0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1396" y="-1003.448275862069"/>
+            <point key="canvasLocation" x="1396" y="-997"/>
         </scene>
         <!--MainAR View Controller-->
         <scene sceneID="1ob-Jv-3w6">
@@ -238,6 +246,9 @@
                                 <state key="normal" backgroundImage="info-icon"/>
                                 <connections>
                                     <action selector="onToggleInfo:" destination="vvh-ms-7HY" eventType="touchUpInside" id="fTy-SX-m9D"/>
+                                    <segue destination="WNf-AW-0Iw" kind="popoverPresentation" identifier="popoverHelp" popoverAnchorView="KY0-l4-qDh" id="rdc-AM-O3w">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES"/>
+                                    </segue>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0/12" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2BX-1k-PBG">
@@ -304,7 +315,7 @@
                                 <rect key="frame" x="16" y="713" width="343" height="65"/>
                                 <subviews>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hg7-Fi-I5q" customClass="RoundedButton" customModule="RepAR" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="117.33333333333333" height="65"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="117.66666666666667" height="65"/>
                                         <color key="backgroundColor" red="0.28627450980000002" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="65" id="k1x-JY-a2c"/>
@@ -324,7 +335,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sD8-uX-83P" customClass="RoundedButton" customModule="RepAR" customModuleProvider="target">
-                                        <rect key="frame" x="137.33333333333337" y="0.0" width="205.66666666666663" height="65"/>
+                                        <rect key="frame" x="137.66666666666663" y="0.0" width="205.33333333333337" height="65"/>
                                         <color key="backgroundColor" red="0.99215686270000003" green="1" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="65" id="eTR-hp-ECc"/>
@@ -482,6 +493,47 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2lB-bg-FfE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-151" y="359"/>
+        </scene>
+        <!--Help View Controller-->
+        <scene sceneID="BfL-fa-HUz">
+            <objects>
+                <viewController id="WNf-AW-0Iw" customClass="HelpViewController" customModule="RepAR" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hHE-hj-iKg">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aide" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1WC-g3-lB0">
+                                <rect key="frame" x="16" y="60" width="343" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="2rc-5J-yQ2"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="FredokaOne-Regular" family="Fredoka One" pointSize="40"/>
+                                <color key="textColor" red="0.28627450980000002" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MSV-nV-2nT">
+                                <rect key="frame" x="0.0" y="118" width="375" height="640"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="XCx-NF-sRk" firstAttribute="bottom" secondItem="MSV-nV-2nT" secondAttribute="bottom" constant="20" id="2PR-Ee-hPn"/>
+                            <constraint firstItem="1WC-g3-lB0" firstAttribute="top" secondItem="XCx-NF-sRk" secondAttribute="top" constant="16" id="UA8-Ex-DPB"/>
+                            <constraint firstItem="MSV-nV-2nT" firstAttribute="top" secondItem="1WC-g3-lB0" secondAttribute="bottom" constant="8" id="XKI-ji-cvi"/>
+                            <constraint firstItem="XCx-NF-sRk" firstAttribute="trailing" secondItem="1WC-g3-lB0" secondAttribute="trailing" constant="16" id="XmS-5f-yW3"/>
+                            <constraint firstItem="XCx-NF-sRk" firstAttribute="trailing" secondItem="MSV-nV-2nT" secondAttribute="trailing" id="kbd-dv-QfL"/>
+                            <constraint firstItem="MSV-nV-2nT" firstAttribute="leading" secondItem="XCx-NF-sRk" secondAttribute="leading" id="md3-ek-GWZ"/>
+                            <constraint firstItem="1WC-g3-lB0" firstAttribute="leading" secondItem="XCx-NF-sRk" secondAttribute="leading" constant="16" id="zso-Gl-sGf"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="XCx-NF-sRk"/>
+                    </view>
+                    <connections>
+                        <outlet property="helpView" destination="MSV-nV-2nT" id="fdf-Ia-ATQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CXN-aw-8xp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2124" y="-998.27586206896558"/>
         </scene>
     </scenes>
     <resources>

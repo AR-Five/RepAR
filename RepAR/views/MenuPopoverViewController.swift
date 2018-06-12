@@ -8,28 +8,37 @@
 
 import UIKit
 
+protocol MenuDelegate {
+    func onTapHome()
+}
+
 class MenuPopoverViewController: UIViewController {
 
+    var delegate: MenuDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        updateLabelTorch()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func updateLabelTorch() {
+        if isTorchEnabled() {
+            torchButton.setTitle("Eteindre torche", for: .normal)
+        } else {
+            torchButton.setTitle("Allumer torche", for: .normal)
+        }
     }
-    */
-
+    
+    @IBOutlet var torchButton: RoundedButton!
+    
+    @IBAction func onTapHome(_ sender: UIButton) {
+        delegate?.onTapHome()
+        dismiss(animated: false, completion: nil)
+    }
+    
+    @IBAction func onToggleTorch(_ sender: UIButton) {
+        toggleTorch(on: !isTorchEnabled())
+        updateLabelTorch()
+    }
+    
 }

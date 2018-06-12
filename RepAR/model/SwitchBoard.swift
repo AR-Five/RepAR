@@ -51,7 +51,7 @@ class Switch {
     func toggleArrow(on: Bool) {
         guard let aNode = arrowNode else {return}
         aNode.isHidden = !on
-        if !aNode.isHidden {
+        if !aNode.isHidden && !aNode.hasActions {
             //            arrowNode?.runAction(hoverAction())
             aNode.runAction(SCNAction.group([hoverAction(), rotateAction()]))
         }
