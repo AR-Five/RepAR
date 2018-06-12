@@ -95,6 +95,8 @@ class Repair {
                 RepairButtonChoice(id: "socket", title: "Prise"),
             ]
             
+            askGear.questionId = "case2-ask-gear"
+            
             current.then(askGear)
             current = askGear
         }
@@ -104,45 +106,109 @@ class Repair {
     static func lightbulbCase(_ step: RepairStep) -> RepairStep {
         let changeLightBulb = RepairStep(text: "Changez l'ampoule", action: .changeLightBulb, view: .navigation)
         let pullUpMain = RepairStep(text: "Remontez ce disjoncteur", action: .pullLeverUp, view: .navigation)
-        let end = RepairStep(text: "Appelez un électricien", action: .endContinue, view: .none)
+        let isWorking = RepairStep(text: "Le disjoncteur est-il tombé ?", action: .askSwitchBroken, view: .choices)
+        isWorking.currentSwitch = step.currentSwitch
+        isWorking.questionId = "case2-mainswitch-broken" //"case2-ask-lightbulb"
+        let end = RepairStep(text: "Appelez un électricien", action: .endContinue)
+        end.currentSwitch = step.currentSwitch
+        end.questionId = "case2-lightbulb-issue"
+        
+        isWorking.choicesButtonLabel = [
+            RepairButtonChoice(id: "yes", title: "Oui", step: end),
+            RepairButtonChoice(id: "no", title: "Non")
+        ]
+        
         pullUpMain.currentSwitch = step.currentSwitch
         step.then(changeLightBulb)
         changeLightBulb.then(pullUpMain)
-        pullUpMain.questionId = "end-change-equip"
-        pullUpMain.then(end)
+        pullUpMain.then(isWorking)
         return changeLightBulb
     }
     
-    static func thirdCase(prev: RepairStep, row: SwitchBoardRow) -> RepairStep {
-        var current = prev
-        for sw in row.switches.filter({ $0.attachedGear.contains(.socket) }) {
-            let unplug = RepairStep(text: "Débranchez tout les appareils reliés à ce disjoncteur", action: .unplug, view: .navigation)
-            unplug.currentSwitch = sw
-            let pullUp = RepairStep(text: "Remontez le disjoncteur sélectionné", action: .pullLeverUp, view: .navigation)
-            pullUp.currentSwitch = sw
-            
-            let ask = RepairStep(text: "Ce disjoncteur a-t-il sauté ?", action: .askSwitchBroken, view: .choices)
-            ask.choicesButtonLabel = [
-                RepairButtonChoice(id: "yes", title: "Oui"),
-                RepairButtonChoice(id: "no", title: "Non")
-            ]
-            ask.currentSwitch = sw
-            
-            unplug.then(pullUp)
-            pullUp.then(ask)
-            current = ask
-        }
-        return current
+    static func thirdCase(step: RepairStep, row: SwitchBoardRow) -> RepairStep? {
+        let checkGear = RepairStep(text: "Regardez sous ce disjoncteur pour voir l'équipement ou la pièce reliée.", action: .checkGear, view: .navigation)
+        checkGear.currentSwitch = step.currentSwitch
+        let unplug = RepairStep(text: "Débranchez tout les appareils reliés à ce disjoncteur", action: .unplug, view: .navigation)
+        unplug.currentSwitch = step.currentSwitch
+        
+        let pullUp = RepairStep(text: "Remontez le disjoncteur sélectionné", action: .pullLeverUp, view: .navigation)
+        pullUp.currentSwitch = step.currentSwitch
+        
+        let plug = RepairStep(text: "Branchez un des équipements qui était relié a ce disjoncteur", action: .plugOne, view: .navigation)
+        plug.currentSwitch = step.currentSwitch
+        
+        let ask = RepairStep(text: "Ce disjoncteur a-t-il sauté ?", action: .askSwitchBroken, view: .choices)
+        ask.choicesButtonLabel = [
+            RepairButtonChoice(id: "yes", title: "Oui", step: thirdCaseBranchOneFailed(sw: step.currentSwitch, next: checkGear, row: row)),
+            RepairButtonChoice(id: "no", title: "Non", step: askMoreGearAttached(sw: step.currentSwitch, next: checkGear, row: row))
+        ]
+        ask.currentSwitch = row.rowSwitch
+        
+        step.then(checkGear)
+        checkGear.then(unplug)
+        unplug.then(pullUp)
+        pullUp.then(plug)
+        plug.then(ask)
+        
+        return step.getNext()
     }
     
-    static func thirdCaseBranchOneFailed(sw: Switch, next: RepairStep, row: SwitchBoardRow) -> RepairStep {
-        let first = RepairStep(text: "Débranchez l'équipement que vous venez de brancher a ce disjoncteur, puis branchez en un nouveau", action: .unplug, view: .navigation)
+    static func askMoreGearAttached(sw: Switch?, next: RepairStep?, row: SwitchBoardRow) -> RepairStep? {
+        let ask = RepairStep(text: "Est-ce que tout les équipements ont été testés ?", action: .askAllGearTested, view: .choices)
+        ask.choicesButtonLabel = [
+            RepairButtonChoice(id: "yes", title: "Oui", step: allGearTested(sw: sw, row: row)),
+            RepairButtonChoice(id: "no", title: "Non", step: next),
+        ]
+        ask.currentSwitch = sw
+        return ask
+    }
+    
+    static func thirdCaseBranchOneFailed(sw: Switch?, next: RepairStep?, row: SwitchBoardRow) -> RepairStep? {
+        let first = RepairStep(text: "Débranchez l'équipement que vous venez de brancher à ce disjoncteur, puis branchez en un nouveau", action: .unplug, view: .navigation)
         first.currentSwitch = sw
         let sec = RepairStep(text: "Remontez le disjoncteur sélectionné", action: .pullLeverUp, view: .navigation)
         sec.currentSwitch = row.rowSwitch
         
+        let socketIssue = RepairStep(text: "Le problème provient de la prise. Il faut appeler un électricien.", action: .endContinueLoop, view: .full)
+        socketIssue.then(askMoreGearAttached(sw: sw, next: next, row: row))
+        socketIssue.questionId = "case3-socketissue"
+        socketIssue.currentSwitch = sw
+        
+        let firstGearIssue = RepairStep(text: "Le problème provient du premier équipement testé, il va falloir le changer.", action: .endContinueLoop, view: .full)
+        firstGearIssue.then(askMoreGearAttached(sw: sw, next: next, row: row))
+        firstGearIssue.questionId = "case3-firstgearissue"
+        firstGearIssue.currentSwitch = sw
+        
+        let ask = RepairStep(text: "Ce disjoncteur a-t-il sauté ?", action: .askSwitchBroken, view: .choices)
+        ask.choicesButtonLabel = [
+            RepairButtonChoice(id: "yes", title: "Oui", step: socketIssue),
+            RepairButtonChoice(id: "no", title: "Non", step: firstGearIssue),
+        ]
+        ask.currentSwitch = row.rowSwitch
+        
         first.then(sec)
-        sec.then(next)
+        sec.then(ask)
         return first
+    }
+    
+    static func allGearTested(sw: Switch?, row: SwitchBoardRow) -> RepairStep? {
+        let plugAll = RepairStep(text: "Rebranchez tout les équipements", action: .plugAll, view: .navigation)
+        let ask = RepairStep(text: "Ce disjoncteur a-t-il sauté ?", action: .askSwitchBroken, view: .choices)
+        
+        let tempIssue = RepairStep(text: "Si ce phénomène se reproduit, il faut appeler un électricien.", action: .endContinue)
+        tempIssue.questionId = "case3-end"
+        tempIssue.currentSwitch = sw
+        
+        let tooMuchGear = RepairStep(text: "Il y a trop d'équipements reliés au même endroit. Il faut diminuer le nombre d'équipements.", action: .endContinue)
+        tooMuchGear.questionId = "case3-end"
+        tooMuchGear.currentSwitch = sw
+        
+        ask.choicesButtonLabel = [
+            RepairButtonChoice(id: "yes", title: "Oui", step: tooMuchGear),
+            RepairButtonChoice(id: "no", title: "Non", step: tempIssue),
+        ]
+        ask.currentSwitch = row.rowSwitch
+        plugAll.then(ask)
+        return plugAll
     }
 }

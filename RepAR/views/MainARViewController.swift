@@ -12,6 +12,7 @@ import ARKit
 protocol MainARDelegate {
     func onReset()
     func onDisplayMenu(sender: UIViewController)
+    func onStartDetection()
 }
 
 class MainARViewController: UIViewController {
@@ -49,10 +50,7 @@ class MainARViewController: UIViewController {
     
     
     @IBAction func onToggleMenu(_ sender: UIButton) {
-        DispatchQueue.main.async {
-//            self.performSegue(withIdentifier: "popoverMenu", sender: self)
-            self.reset()
-        }
+        // yolo
     }
     
     @IBAction func onToggleInfo(_ sender: UIButton) {
@@ -61,6 +59,8 @@ class MainARViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        modalPresentationStyle = .currentContext
+        
         infoLabel.layer.cornerRadius = 15
         
         navigationView.delegate = self
@@ -145,13 +145,18 @@ class MainARViewController: UIViewController {
             }
         }
         
-        if step.action == .end || step.action == .endContinue {
-            DispatchQueue.main.async {
-                self.switchTo(vc: self.endView)
+        
+        DispatchQueue.main.async {
+            if step.action == .end || step.action == .endContinue {
+                self.add(self.endView)
                 self.endView.mainTitle.text = step.text
+                return
+            } else {
+                self.endView.remove()
+                return
             }
-            return
         }
+        
         
         // if the view type is choice we build the buttons
         if step.viewType == .choices {
@@ -230,8 +235,15 @@ class MainARViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "popoverMenu" {
+            let dest = segue.destination
+            dest.preferredContentSize = CGSize(width: 400, height: 300)
             if let ctr = segue.destination.popoverPresentationController {
                 ctr.delegate = self
+                
+                var origin = ctr.sourceRect.origin
+                origin.x = ctr.sourceView!.frame.width / 2
+                origin.y = ctr.sourceView!.frame.height
+                ctr.sourceRect = CGRect(origin: origin, size: .zero)
             }
         }
     }
@@ -280,6 +292,8 @@ extension MainARViewController: ChoiceViewDelegate {
                             return
                         }
                     }
+                   
+                    
                     break
                 case "no":
                     if step.questionId == "case2-mainswitch-broken" {
@@ -288,6 +302,13 @@ extension MainARViewController: ChoiceViewDelegate {
                             currentStep = step.getNext()
                             return
                         }
+                    }
+                    
+                    break
+                case "socket":
+                    if step.questionId == "case2-ask-gear" {
+                        currentStep?.currentSwitch?.attachedGear.append(.socket)
+                        currentStep = Repair.thirdCase(step: step, row: switchboard!.rows.first!)
                     }
                     break
                 default:
@@ -312,7 +333,15 @@ extension MainARViewController: BlurTitleDelegate {
         
         if let step = currentStep {
             if step.action == .endContinue {
-                currentStep?.prev?.currentSwitch?.state = .normal
+                
+                if step.questionId == "case2-lightbulb-issue" {
+                    currentStep?.currentSwitch?.state = .unfixable
+                }
+                
+                if step.questionId == "case3-end" {
+                    step.currentSwitch?.state = .normal
+                }
+                
                 if let next = Repair.askEquipment(prev: currentStep!, row: switchboard!.rows.first!) {
                     currentStep?.then(next)
                     currentStep = currentStep?.getNext()
@@ -322,7 +351,22 @@ extension MainARViewController: BlurTitleDelegate {
                 return
             }
             
+            if step.action == .endContinueLoop {
+                
+                if step.questionId == "case3-socketissue" {
+                    step.currentSwitch?.state = .unfixable
+                }
+                
+                if step.questionId == "case3-firstgearissue" {
+                    step.currentSwitch?.state = .normal
+                }
+                
+                currentStep = currentStep?.getNext()
+                return
+            }
+            
             if step.action == .gotoSwitchBoard {
+                delegate?.onStartDetection()
                 currentStep = step.getNext()
                 return
             }
@@ -338,4 +382,7 @@ extension MainARViewController: UIPopoverPresentationControllerDelegate {
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
+    
+    
+    
 }

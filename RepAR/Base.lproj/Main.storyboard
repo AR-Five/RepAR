@@ -115,25 +115,82 @@
             </objects>
             <point key="canvasLocation" x="-151" y="-293"/>
         </scene>
-        <!--View Controller-->
+        <!--Menu Popover View Controller-->
         <scene sceneID="D9Q-Nz-eh5">
             <objects>
-                <viewController id="bG9-hB-AWc" sceneMemberID="viewController">
+                <viewController id="bG9-hB-AWc" customClass="MenuPopoverViewController" customModule="RepAR" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="RWn-oZ-R6s">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Menu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GK7-Gc-0aC">
+                                <rect key="frame" x="16" y="60" width="343" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="OIh-bD-5dY"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="FredokaOne-Regular" family="Fredoka One" pointSize="40"/>
+                                <color key="textColor" red="0.28627450980000002" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LwL-eX-E69" customClass="RoundedButton" customModule="RepAR" customModuleProvider="target">
+                                <rect key="frame" x="16" y="154.33333333333334" width="343" height="50"/>
+                                <color key="backgroundColor" red="0.28627450980000002" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="edT-Yp-mgH"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="FredokaOne-Regular" family="Fredoka One" pointSize="25"/>
+                                <state key="normal" title="Accueil">
+                                    <color key="titleColor" red="0.99215686270000003" green="1" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="round" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadiusValue">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aq4-w2-zuh" customClass="RoundedButton" customModule="RepAR" customModuleProvider="target">
+                                <rect key="frame" x="16" y="224.33333333333334" width="343" height="50.000000000000028"/>
+                                <color key="backgroundColor" red="0.28627450980000002" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="62I-z7-B8j"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="FredokaOne-Regular" family="Fredoka One" pointSize="25"/>
+                                <state key="normal" title="Allumer torche">
+                                    <color key="titleColor" red="0.99215686270000003" green="1" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="round" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadiusValue">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="2CQ-aE-bwz" firstAttribute="trailing" secondItem="GK7-Gc-0aC" secondAttribute="trailing" constant="16" id="Btv-DV-UaX"/>
+                            <constraint firstItem="GK7-Gc-0aC" firstAttribute="leading" secondItem="2CQ-aE-bwz" secondAttribute="leading" constant="16" id="DC6-jK-2dr"/>
+                            <constraint firstItem="LwL-eX-E69" firstAttribute="leading" secondItem="2CQ-aE-bwz" secondAttribute="leading" constant="16" id="EQr-oJ-cKQ"/>
+                            <constraint firstItem="aq4-w2-zuh" firstAttribute="leading" secondItem="2CQ-aE-bwz" secondAttribute="leading" constant="16" id="GGe-ye-zoV"/>
+                            <constraint firstItem="LwL-eX-E69" firstAttribute="top" secondItem="GK7-Gc-0aC" secondAttribute="bottom" constant="45" id="HhY-c3-qpJ"/>
+                            <constraint firstItem="aq4-w2-zuh" firstAttribute="top" secondItem="LwL-eX-E69" secondAttribute="bottom" constant="20" id="IQ6-ai-vus"/>
+                            <constraint firstItem="GK7-Gc-0aC" firstAttribute="top" secondItem="2CQ-aE-bwz" secondAttribute="top" constant="16" id="pSP-8i-pD2"/>
+                            <constraint firstItem="2CQ-aE-bwz" firstAttribute="trailing" secondItem="LwL-eX-E69" secondAttribute="trailing" constant="16" id="taW-VI-NRY"/>
+                            <constraint firstItem="2CQ-aE-bwz" firstAttribute="trailing" secondItem="aq4-w2-zuh" secondAttribute="trailing" constant="16" id="udc-6l-sqK"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="2CQ-aE-bwz"/>
                     </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fxc-eX-AE0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1396" y="-1013"/>
+            <point key="canvasLocation" x="1396" y="-1003.448275862069"/>
         </scene>
         <!--MainAR View Controller-->
         <scene sceneID="1ob-Jv-3w6">
             <objects>
-                <viewController storyboardIdentifier="mainAR" id="vvh-ms-7HY" customClass="MainARViewController" customModule="RepAR" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="mainAR" definesPresentationContext="YES" id="vvh-ms-7HY" customClass="MainARViewController" customModule="RepAR" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cfT-eX-mhr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -167,8 +224,8 @@
                                 <state key="normal" backgroundImage="menu-icon"/>
                                 <connections>
                                     <action selector="onToggleMenu:" destination="vvh-ms-7HY" eventType="touchUpInside" id="C2Q-Ld-qSd"/>
-                                    <segue destination="bG9-hB-AWc" kind="popoverPresentation" identifier="popoverMenu" popoverAnchorView="Lwx-Ct-ETr" id="caX-zk-sST">
-                                        <popoverArrowDirection key="popoverArrowDirection" down="YES"/>
+                                    <segue destination="bG9-hB-AWc" kind="popoverPresentation" identifier="popoverMenu" popoverAnchorView="Lwx-Ct-ETr" id="pqR-3C-rbw">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES"/>
                                     </segue>
                                 </connections>
                             </button>
@@ -194,7 +251,7 @@
                                 <color key="shadowColor" red="0.28627450980000002" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <size key="shadowOffset" width="0.0" height="1"/>
                             </label>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="4oW-4x-Srf">
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4oW-4x-Srf">
                                 <rect key="frame" x="16" y="114" width="343" height="2"/>
                                 <color key="tintColor" red="0.99215686270000003" green="1" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </progressView>

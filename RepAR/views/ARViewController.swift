@@ -40,17 +40,20 @@ class ARViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        definesPresentationContext = true
+        
         setupDelegates()
         
 //        mainView.show(view: mainTitle.view)
         
-        switchTo(vc: mainTitle)
+//        switchTo(vc: mainTitle)
+        add(mainTitle)
         
 //        present(mainTitle, animated: true, completion: nil)
         
-        let tapgesture = UITapGestureRecognizer(target: self, action: #selector(self.tapGesture))
+//        let tapgesture = UITapGestureRecognizer(target: self, action: #selector(self.tapGesture))
         
-        view.addGestureRecognizer(tapgesture)
+//        view.addGestureRecognizer(tapgesture)
         
         initArView()
     }
@@ -162,10 +165,10 @@ class ARViewController: UIViewController {
 
 extension ARViewController: TitleViewDelegate {
     func onTitleBtn() {
-        detectionInitiated = true
-        initARSessionImages()
-        switchTo(vc: mainAR)
-        //toggleTorch(on: true)
+        mainTitle.remove()
+//        switchTo(vc: mainAR)
+        add(mainAR)
+//        toggleTorch(on: true)
     }
 }
 
@@ -175,17 +178,15 @@ extension ARViewController: MainARDelegate {
     }
     
     func onReset() {
-        if let imageAnchor = imageDetectedAnchor {
-            sceneView.session.remove(anchor: imageAnchor)
-        }
-        
-        sceneView.scene.rootNode.childNodes.forEach { node in
-            if node.name == "balls" {
-                node.removeFromParentNode()
-            }
-        }
-        
-        switchTo(vc: mainTitle)
+        mainAR.remove()
+        add(self.mainTitle)
+        initARSessionDefault()
+//        switchTo(vc: mainTitle)
+    }
+    
+    func onStartDetection() {
+        detectionInitiated = true
+        initARSessionImages()
     }
     
 }

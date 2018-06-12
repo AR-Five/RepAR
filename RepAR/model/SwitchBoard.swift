@@ -14,7 +14,7 @@ enum SwitchType {
 }
 
 enum SwitchState {
-    case normal, error, unknown
+    case normal, error, unknown, unfixable
 }
 
 enum Gear {
@@ -67,13 +67,16 @@ class Switch {
     
     func updateStatus() {
         guard let sNode = statusNode else { return }
-        var color = #colorLiteral(red: 0.9921568627, green: 1, blue: 0.1333333333, alpha: 1)
+        var color = UIColor.green
         switch state {
         case .error:
             color = UIColor.red
             break
         case .unknown:
             color = #colorLiteral(red: 0.2862745098, green: 0.2862745098, blue: 0.2862745098, alpha: 1)
+            break
+        case .unfixable:
+            color = UIColor.orange
             break
         default:
             break
@@ -138,14 +141,11 @@ class Switch {
             SCNAction.moveBy(x: 0, y: 0, z: -0.002, duration: 1),
             SCNAction.moveBy(x: 0, y: 0, z: 0.002, duration: 1),
             ])
-        return SCNAction.repeat(hover, count: 300)
+        return SCNAction.repeatForever(hover)
     }
     
     func rotateAction() -> SCNAction {
-        return SCNAction.repeat(
-            SCNAction.rotateBy(x: 0, y: 0, z: 2 * .pi, duration: 10),
-            count: 300
-        )
+        return SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: 0, z: 2 * .pi, duration: 10))
     }
     /*
     func loadAnimation(withKey: String, sceneName: String, animationIdentifier:String) {

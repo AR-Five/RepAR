@@ -12,10 +12,10 @@ enum RepairAction {
     case gotoSwitchBoard
     case chooseMainSwitch
     case pullAllSimpleSwitchDown, pullLeverUp, pullLeverDown
-    case askSwitchBroken, askGearConnected
+    case askSwitchBroken, askGearConnected, askAllGearTested, checkGear
     case changeLightBulb
-    case unplug
-    case end, endContinue
+    case unplug, plugAll, plugOne
+    case end, endContinue, endContinueLoop
 }
 
 enum RepairActionStatus {
@@ -34,7 +34,7 @@ struct RepairButtonChoice {
         self.id = id
         self.title = title
     }
-    init(id: String, title: String, step: RepairStep) {
+    init(id: String, title: String, step: RepairStep?) {
         self.init(id: id, title: title)
         self.step = step
     }
@@ -42,6 +42,9 @@ struct RepairButtonChoice {
 
 class RepairStep {
     let text: String
+    
+    var helpText = "Pas d'aide"
+    
     let action: RepairAction
     var viewType: RepairViewType = .none
     var status: RepairActionStatus = .pending
@@ -65,12 +68,12 @@ class RepairStep {
     // next task to do if current failed
     private var nextFailed: RepairStep?
     
-    func then(_ step: RepairStep) {
+    func then(_ step: RepairStep?) {
         self.next = step
         self.next?.prev = self
     }
     
-    func thenIfFailed(_ step: RepairStep) {
+    func thenIfFailed(_ step: RepairStep?) {
         self.nextFailed = step
         self.nextFailed?.prev = self
     }

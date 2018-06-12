@@ -18,6 +18,11 @@ class ChoiceViewController: UIViewController {
     
     @IBOutlet var stackView: UIStackView!
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        modalPresentationStyle = .overCurrentContext
+    }
+    
     func createButton(title: String, tag: Int) -> RoundedButton {
         let btn = RoundedButton()
         btn.tag = tag

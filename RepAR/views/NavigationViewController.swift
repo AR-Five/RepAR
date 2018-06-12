@@ -19,6 +19,7 @@ class NavigationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        modalPresentationStyle = .overCurrentContext
     }
     
     @IBAction func onNext(_ sender: UIButton) {

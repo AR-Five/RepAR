@@ -20,12 +20,12 @@ class TitleViewController: UIViewController {
     
     
     @IBAction func titleButton(_ sender: UIButton) {
-        view.isHidden = true
-        self.didMove(toParentViewController: nil)
-        self.view.removeFromSuperview()
-        self.removeFromParentViewController()
-        
         delegate?.onTitleBtn()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        modalPresentationStyle = .overCurrentContext
     }
     
 }

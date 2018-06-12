@@ -20,4 +20,9 @@ class BlurTitleViewController: UIViewController {
     @IBAction func onOk(_ sender: RoundedButton) {
         delegate?.onOk()
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        modalPresentationStyle = .overCurrentContext
+    }
 }
