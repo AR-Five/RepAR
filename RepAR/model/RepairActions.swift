@@ -11,6 +11,83 @@ import UIKit
 class Repair {
     
     static func run() -> RepairStep {
+        return initialCase();
+    }
+    
+    static func initialCase() -> RepairStep {
+        let askHome = RepairStep(text: "Dans quel type d'habitation êtes-vous ?", action: .askSwitchBroken, view: .choices)
+        askHome.questionId = "case0-mainswitch"
+        askHome.choicesButtonLabel = [
+            RepairButtonChoice(id: "house", title: "Maison"),
+            RepairButtonChoice(id: "apartment", title: "appartement"),
+        ]
+        askHome.then(houseCase())
+        askHome.thenIfFailed(apartmentCase())
+        return askHome;
+    }
+    
+    static func houseCase() -> RepairStep {
+        let ask = RepairStep(text: "Regarder par la fenêtre pour voir si dans le quartier, il y a le même problème.", action: .askSwitchBroken, view: .choices)
+        let askNeighbor = RepairStep(text: "Aller demander dans les maisons voisines s'ils ont le même soucis.", action: .askSwitchBroken, view: .choices)
+        
+        ask.questionId = "case0-mainswitch"
+        askNeighbor.questionId = ask.questionId
+        
+        ask.choicesButtonLabel = [
+            RepairButtonChoice(id: "yes", title: "Oui"),
+            RepairButtonChoice(id: "no", title: "Non"),
+            RepairButtonChoice(id: "unknown", title: "Je ne sais pas"),
+        ]
+        askNeighbor.choicesButtonLabel = ask.choicesButtonLabel
+        
+        ask.then(askNeighbor)  // no ou unknow
+        ask.thenIfFailed(generalCase()) // yes
+        
+        askNeighbor.then(goToSwitchBoardCase())  // no ou unknow
+        askNeighbor.thenIfFailed(generalCase()) // yes
+        return ask;
+    }
+    
+    static func apartmentCase() -> RepairStep {
+        let ask = RepairStep(text: "Regarder par la fenêtre pour voir si dans le quartier, il y a le même problème.", action: .askSwitchBroken, view: .choices)
+        let askFloor = RepairStep(text: "Regarder si il y a de la lumière sur le palier.", action: .askSwitchBroken, view: .choices)
+        let askStairCase = RepairStep(text: "Regarder s’il y a de la lumière dans la cage d’escalier.", action: .askSwitchBroken, view: .choices)
+        let askNeighbor = RepairStep(text: "Se renseigner auprès de ses voisins de palier.", action: .askSwitchBroken, view: .choices)
+        
+        ask.questionId = "case0-mainswitch"
+        askNeighbor.questionId = ask.questionId
+        askStairCase.questionId = ask.questionId
+        askFloor.questionId = ask.questionId
+        
+        ask.choicesButtonLabel = [
+            RepairButtonChoice(id: "yes", title: "Oui"),
+            RepairButtonChoice(id: "no", title: "Non"),
+            RepairButtonChoice(id: "unknown", title: "Je ne sais pas"),
+        ]
+        askNeighbor.choicesButtonLabel = ask.choicesButtonLabel
+        askStairCase.choicesButtonLabel = ask.choicesButtonLabel
+        askFloor.choicesButtonLabel = ask.choicesButtonLabel
+        
+        ask.then(askFloor)  // no ou unknow
+        ask.thenIfFailed(generalCase()) // yes
+        
+        askFloor.then(askStairCase) // no ou unknow
+        askFloor.thenIfFailed(generalCase()) // yes
+        
+        askStairCase.then(askNeighbor) // no ou unknow
+        askStairCase.thenIfFailed(generalCase()) // yes
+        
+        askNeighbor.then(goToSwitchBoardCase()) // no ou unknow
+        askNeighbor.thenIfFailed(generalCase()) // yes
+        
+        return ask;
+    }
+    
+    static func generalCase() -> RepairStep {
+        return RepairStep(text: "Il s'agissait d'un problème global, une intervention externe est nécessaire.", action: .end)
+    }
+    
+    static func goToSwitchBoardCase() -> RepairStep {
         let info = RepairStep(text: "Dirigez-vous vers votre tableau électrique", action: .gotoSwitchBoard, view: .full)
         let goToPanel = RepairStep(text: "Visez votre tableau électrique", action: .gotoSwitchBoard)
         //let chooseMainSwitch = RepairStep(text: "Touchez le/les disjoncteur(s) dont le levier est abaissé", action: .chooseMainSwitch)
