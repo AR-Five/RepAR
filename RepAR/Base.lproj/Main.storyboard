@@ -204,7 +204,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7fp-UM-6pg" customClass="EdgeInsetLabel" customModule="RepAR" customModuleProvider="target">
-                                <rect key="frame" x="16" y="125.99999999999999" width="343" height="44.333333333333329"/>
+                                <rect key="frame" x="16" y="100" width="343" height="44.333333333333343"/>
                                 <color key="backgroundColor" red="0.28656933070000001" green="0.28656933070000001" blue="0.28656933070000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="FredokaOne-Regular" family="Fredoka One" pointSize="20"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -224,20 +224,8 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lwx-Ct-ETr">
-                                <rect key="frame" x="16" y="44" width="60" height="62"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="60" id="HBn-Mo-kDU"/>
-                                </constraints>
-                                <state key="normal" backgroundImage="menu-icon"/>
-                                <connections>
-                                    <segue destination="bG9-hB-AWc" kind="popoverPresentation" identifier="popoverMenu" popoverAnchorView="Lwx-Ct-ETr" id="pqR-3C-rbw">
-                                        <popoverArrowDirection key="popoverArrowDirection" up="YES"/>
-                                    </segue>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KY0-l4-qDh">
-                                <rect key="frame" x="299" y="44" width="60" height="60"/>
+                                <rect key="frame" x="299" y="18" width="60" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="9Ao-lg-ynw"/>
                                     <constraint firstAttribute="width" constant="60" id="Nfy-X5-jRH"/>
@@ -249,8 +237,27 @@
                                     </segue>
                                 </connections>
                             </button>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4oW-4x-Srf">
+                                <rect key="frame" x="16" y="88" width="343" height="2"/>
+                                <color key="tintColor" red="0.99215686270000003" green="1" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </progressView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4bw-wO-lqo">
+                                <rect key="frame" x="0.0" y="154" width="375" height="554"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lwx-Ct-ETr">
+                                <rect key="frame" x="16" y="18" width="60" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="HBn-Mo-kDU"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="menu-icon"/>
+                                <connections>
+                                    <segue destination="bG9-hB-AWc" kind="popoverPresentation" identifier="popoverMenu" popoverAnchorView="Lwx-Ct-ETr" id="pqR-3C-rbw">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES"/>
+                                    </segue>
+                                </connections>
+                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0/12" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2BX-1k-PBG">
-                                <rect key="frame" x="84" y="44" width="207" height="60"/>
+                                <rect key="frame" x="84" y="18" width="207" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="DE0-vn-gls"/>
                                 </constraints>
@@ -260,24 +267,16 @@
                                 <color key="shadowColor" red="0.28627450980000002" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <size key="shadowOffset" width="0.0" height="1"/>
                             </label>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4oW-4x-Srf">
-                                <rect key="frame" x="16" y="114" width="343" height="2"/>
-                                <color key="tintColor" red="0.99215686270000003" green="1" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </progressView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4bw-wO-lqo">
-                                <rect key="frame" x="0.0" y="180" width="375" height="528"/>
-                            </view>
                         </subviews>
                         <constraints>
                             <constraint firstItem="4bw-wO-lqo" firstAttribute="leading" secondItem="F9G-WS-gCm" secondAttribute="leading" id="0VK-Gf-aJe"/>
+                            <constraint firstItem="KY0-l4-qDh" firstAttribute="top" secondItem="cfT-eX-mhr" secondAttribute="top" constant="18" id="3QP-zJ-k5H"/>
                             <constraint firstItem="7fp-UM-6pg" firstAttribute="leading" secondItem="F9G-WS-gCm" secondAttribute="leading" constant="16" id="7uG-Q4-iyr"/>
                             <constraint firstItem="F9G-WS-gCm" firstAttribute="trailing" secondItem="KY0-l4-qDh" secondAttribute="trailing" constant="16" id="8Hi-od-MTz"/>
                             <constraint firstItem="F9G-WS-gCm" firstAttribute="bottom" secondItem="4bw-wO-lqo" secondAttribute="bottom" constant="70" id="G0n-g5-ncW"/>
                             <constraint firstItem="F9G-WS-gCm" firstAttribute="trailing" secondItem="4bw-wO-lqo" secondAttribute="trailing" id="J2M-QY-QMS"/>
-                            <constraint firstItem="2BX-1k-PBG" firstAttribute="top" secondItem="F9G-WS-gCm" secondAttribute="top" id="NtL-JI-I6w"/>
+                            <constraint firstItem="2BX-1k-PBG" firstAttribute="top" secondItem="cfT-eX-mhr" secondAttribute="top" constant="18" id="Mkn-7e-b2E"/>
                             <constraint firstItem="Lwx-Ct-ETr" firstAttribute="leading" secondItem="F9G-WS-gCm" secondAttribute="leading" constant="16" id="Q7V-X2-DGy"/>
-                            <constraint firstItem="KY0-l4-qDh" firstAttribute="top" secondItem="F9G-WS-gCm" secondAttribute="top" id="STl-o5-yv3"/>
-                            <constraint firstItem="Lwx-Ct-ETr" firstAttribute="top" secondItem="F9G-WS-gCm" secondAttribute="top" id="W1a-QL-kNi"/>
                             <constraint firstItem="4oW-4x-Srf" firstAttribute="top" secondItem="Lwx-Ct-ETr" secondAttribute="bottom" constant="8" id="X6p-Ea-XDW"/>
                             <constraint firstItem="4oW-4x-Srf" firstAttribute="leading" secondItem="cfT-eX-mhr" secondAttribute="leadingMargin" id="Xrr-OV-2aU"/>
                             <constraint firstItem="4oW-4x-Srf" firstAttribute="top" secondItem="2BX-1k-PBG" secondAttribute="bottom" constant="10" id="bZX-zY-6xD"/>
@@ -285,6 +284,7 @@
                             <constraint firstItem="7fp-UM-6pg" firstAttribute="top" secondItem="4oW-4x-Srf" secondAttribute="bottom" constant="10" id="jMR-3s-pFB"/>
                             <constraint firstItem="2BX-1k-PBG" firstAttribute="leading" secondItem="Lwx-Ct-ETr" secondAttribute="trailing" constant="8" id="pjA-Xk-Rus"/>
                             <constraint firstItem="4bw-wO-lqo" firstAttribute="top" secondItem="7fp-UM-6pg" secondAttribute="bottom" constant="10" id="sXf-Vf-URG"/>
+                            <constraint firstItem="Lwx-Ct-ETr" firstAttribute="top" secondItem="cfT-eX-mhr" secondAttribute="top" constant="18" id="xLe-Y0-um3"/>
                             <constraint firstItem="4oW-4x-Srf" firstAttribute="trailing" secondItem="cfT-eX-mhr" secondAttribute="trailingMargin" id="zeY-R4-5ap"/>
                             <constraint firstItem="KY0-l4-qDh" firstAttribute="leading" secondItem="2BX-1k-PBG" secondAttribute="trailing" constant="8" id="zvP-uz-v7a"/>
                         </constraints>
