@@ -323,6 +323,10 @@ extension MainARViewController: ChoiceViewDelegate {
                             return
                         }
                     }
+                    else if step.questionId == "case0-mainswitch" {
+                        currentStep = step.getNextFailed()
+                        return
+                    }
                    
                     
                     break
@@ -335,6 +339,10 @@ extension MainARViewController: ChoiceViewDelegate {
                             return
                         }
                     }
+                    else if step.questionId == "case0-mainswitch" {
+                        currentStep = step.getNext()
+                        return
+                    }
                     
                     break
                 case "socket":
@@ -343,6 +351,18 @@ extension MainARViewController: ChoiceViewDelegate {
                         currentStep = Repair.thirdCase(step: step, row: switchboard!.rows.first!)
                     }
                     break
+                case "house" :
+                    if step.questionId == "case0-mainswitch" {
+                        stepsDone += 1
+                        currentStep = step.getNext()
+                    }
+                    break;
+                case "apartment" :
+                    if step.questionId == "case0-mainswitch" {
+                        stepsDone += 1
+                        currentStep = step.getNextFailed()
+                    }
+                    break;
                 default:
                     break
                 }
