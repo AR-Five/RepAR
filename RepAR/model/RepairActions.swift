@@ -14,9 +14,13 @@ class Repair {
         return initialCase();
     }
     
+    static func initialCaseHelp() -> RepairHelp {
+        return RepairHelp(text: "Cette étape permet de vérifier si le problème se situe au niveau de votre habitation ou à un niveau global.")
+    }
     static func initialCase() -> RepairStep {
         let askHome = RepairStep(text: "Dans quel type d'habitation êtes-vous ?", action: .askSwitchBroken, view: .choices)
         askHome.questionId = "case0-mainswitch"
+        askHome.help = initialCaseHelp()
         askHome.choicesButtonLabel = [
             RepairButtonChoice(id: "house", title: "Maison"),
             RepairButtonChoice(id: "apartment", title: "appartement"),
@@ -32,6 +36,9 @@ class Repair {
         
         ask.questionId = "case0-mainswitch"
         askNeighbor.questionId = ask.questionId
+        
+        ask.help = initialCaseHelp()
+        askNeighbor.help = ask.help
         
         ask.choicesButtonLabel = [
             RepairButtonChoice(id: "yes", title: "Oui"),
@@ -58,6 +65,11 @@ class Repair {
         askNeighbor.questionId = ask.questionId
         askStairCase.questionId = ask.questionId
         askFloor.questionId = ask.questionId
+        
+        ask.help = initialCaseHelp()
+        askNeighbor.help = ask.help
+        askStairCase.help = ask.help
+        askFloor.help = ask.help
         
         ask.choicesButtonLabel = [
             RepairButtonChoice(id: "yes", title: "Oui"),
@@ -98,7 +110,7 @@ class Repair {
     
     static func firstCase(row: SwitchBoardRow) -> RepairStep {
         let liftSelectedSwitch = RepairStep(text: "Levez le disjoncteur selectionné", action: .pullLeverUp, currentSwitch: row.rowSwitch, view: .choices)
-        
+        liftSelectedSwitch.help = RepairHelp(text: "Cette étape permet de vérifier si le problème est ponctuel. Pour cela, on teste le disjoncteur différentiel qui assure l'arrêt d'urgence en cas de surcharge", image: #imageLiteral(resourceName: "disjoncteur différentiel"))
         liftSelectedSwitch.choicesButtonLabel = [
             RepairButtonChoice(id: "failed", title: "Il est redescendu"),
             RepairButtonChoice(id: "ok", title: "Il reste levé"),
@@ -115,11 +127,13 @@ class Repair {
     static func secondCase(row: SwitchBoardRow) -> RepairStep {
         let allDown = RepairStep(text: "Abaissez tout les disjoncteurs sélectionnés", action: .pullAllSimpleSwitchDown, view: .navigation)
         let firstOneDown = RepairStep(text: "Remontez le disjoncteur sélectionné", action: .pullLeverUp, currentSwitch: row.rowSwitch, view: .navigation)
+        firstOneDown.help = RepairHelp(text: "Cette étape permet de rechercher le disjoncteur en défaut. Pour cela, on abaisse l'ensemble des disjoncteur et l'on teste leur fonctionnement un par un.", image: #imageLiteral(resourceName: "disjoncteur phase neutre"))
         
         var currentStep = firstOneDown
         for sw in row.switches {
             let tryOne = RepairStep(text: "Remontez le disjoncteur sélectionné", action: .pullLeverUp, currentSwitch: sw, view: .navigation)
             let choiceSwitch = RepairStep(text: "Ce disjoncteur a-t-il sauté ?", action: .askSwitchBroken, currentSwitch: sw, view: .choices)
+            choiceSwitch.help = RepairHelp(text: "Pour savoir si le disjoncteut a sauté, vérifier si le disjoncteur différentiel est abaissé.", image: #imageLiteral(resourceName: "disjoncteur différentiel"))
             choiceSwitch.choicesButtonLabel = [
                 RepairButtonChoice(id: "yes", title: "Oui"),
                 RepairButtonChoice(id: "no", title: "Non"),
@@ -151,6 +165,7 @@ class Repair {
     
     static func failedCaseTwo(prev: Switch?, c: RepairStep?, row: SwitchBoardRow) -> RepairStep {
         let resetSingleSw = RepairStep(text: "Abaissez ce disjoncteur", action: .pullLeverDown, view: .navigation)
+        resetSingleSw.help = RepairHelp(text: "Afin de tester l'ensemble des disjoncteurs, ce disjoncteur en défaut restera abaissé lors de la suite des manipulations.", image: #imageLiteral(resourceName: "disjoncteur phase neutre"))
         resetSingleSw.currentSwitch = prev
         let mainSwUp = RepairStep(text: "Remontez ce disjoncteur", action: .pullLeverUp, view: .navigation)
         mainSwUp.currentSwitch = row.rowSwitch
@@ -166,6 +181,7 @@ class Repair {
         var current = prev
         for sw in row.switches.filter({ $0.state == SwitchState.error }) {
             let askGear = RepairStep(text: "A quel(s) appareil ce disjoncteur est-il relié ?", action: .askGearConnected, view: .choices)
+            askGear.help = RepairHelp(text: "L'indication permettant de savoir à quoi est relié le disjoncteur se situe au dessus de celui-ci.", image: #imageLiteral(resourceName: "tableau-electrique-coupure-du-disjoncteur-differentiel"))
             askGear.currentSwitch = sw
             askGear.choicesButtonLabel = [
                 RepairButtonChoice(id: "lightbulb", title: "Ampoule", step: lightbulbCase(askGear)),

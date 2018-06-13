@@ -42,6 +42,8 @@ class HelpViewController: UIViewController {
             }
             label.leadingAnchor.constraint(equalTo: margin.leadingAnchor, constant: 16).isActive = true
             label.trailingAnchor.constraint(equalTo: margin.trailingAnchor, constant: -16).isActive = true
+            label.numberOfLines = 10
+            label.textAlignment = .justified
         }
     }
     
