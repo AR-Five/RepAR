@@ -106,9 +106,11 @@ class Repair {
     static func lightbulbCase(_ step: RepairStep) -> RepairStep {
         let changeLightBulb = RepairStep(text: "Changez l'ampoule", action: .changeLightBulb, view: .navigation)
         let pullUpMain = RepairStep(text: "Remontez ce disjoncteur", action: .pullLeverUp, view: .navigation)
+        
         let isWorking = RepairStep(text: "Le disjoncteur est-il tombé ?", action: .askSwitchBroken, view: .choices)
         isWorking.currentSwitch = step.currentSwitch
-        isWorking.questionId = "case2-mainswitch-broken" //"case2-ask-lightbulb"
+        isWorking.questionId = "case2-ask-lightbulb"
+        
         let end = RepairStep(text: "Appelez un électricien", action: .endContinue)
         end.currentSwitch = step.currentSwitch
         end.questionId = "case2-lightbulb-issue"

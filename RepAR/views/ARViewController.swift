@@ -147,6 +147,7 @@ extension ARViewController: TitleViewDelegate {
         mainTitle.remove()
 //        switchTo(vc: mainAR)
         add(mainAR)
+        mainAR.currentStep = Repair.run()
 //        toggleTorch(on: true)
     }
 }

@@ -231,7 +231,6 @@
                                 </constraints>
                                 <state key="normal" backgroundImage="menu-icon"/>
                                 <connections>
-                                    <action selector="onToggleMenu:" destination="vvh-ms-7HY" eventType="touchUpInside" id="C2Q-Ld-qSd"/>
                                     <segue destination="bG9-hB-AWc" kind="popoverPresentation" identifier="popoverMenu" popoverAnchorView="Lwx-Ct-ETr" id="pqR-3C-rbw">
                                         <popoverArrowDirection key="popoverArrowDirection" up="YES"/>
                                     </segue>
@@ -245,7 +244,6 @@
                                 </constraints>
                                 <state key="normal" backgroundImage="info-icon"/>
                                 <connections>
-                                    <action selector="onToggleInfo:" destination="vvh-ms-7HY" eventType="touchUpInside" id="fTy-SX-m9D"/>
                                     <segue destination="WNf-AW-0Iw" kind="popoverPresentation" identifier="popoverHelp" popoverAnchorView="KY0-l4-qDh" id="rdc-AM-O3w">
                                         <popoverArrowDirection key="popoverArrowDirection" up="YES"/>
                                     </segue>

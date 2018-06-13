@@ -48,18 +48,10 @@ class MainARViewController: UIViewController {
     @IBOutlet var progressLabel: UILabel!
     @IBOutlet var progressBar: UIProgressView!
     
-    
-    @IBAction func onToggleMenu(_ sender: UIButton) {
-        // yolo
-    }
-    
-    @IBAction func onToggleInfo(_ sender: UIButton) {
-        // TODO: to implement
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         modalPresentationStyle = .currentContext
+        progressBar.tintColor = #colorLiteral(red: 0.9921568627, green: 1, blue: 0.1333333333, alpha: 1)
         
         infoLabel.layer.cornerRadius = 15
         
@@ -67,9 +59,7 @@ class MainARViewController: UIViewController {
         choiceView.delegate = self
         endView.delegate = self
         
-        updateProgress()
-        
-        currentStep = Repair.run()
+        toggleProgress(show: false)
     }
     
     func reset() {
@@ -77,6 +67,10 @@ class MainARViewController: UIViewController {
         stepsDone = 0
         currentStep = Repair.run()
         switchboard = nil
+        
+        nbSteps = 0
+        stepsDone = 0
+        toggleProgress(show: false)
     }
     
     func toggleProgress(show: Bool) {
@@ -146,8 +140,14 @@ class MainARViewController: UIViewController {
         if step.action == .pullAllSimpleSwitchDown {
             if let rows = switchboard?.rows {
                 for row in rows {
-                    row.switches.forEach { $0.toggleArrow(on: true) }
+                    row.switches.forEach {
+                        $0.toggleArrow(on: true)
+                        $0.toggleStatus(on: true)
+                    }
                 }
+                nbSteps = rows.first!.switches.count
+                stepsDone = 0
+                toggleProgress(show: true)
             }
         }
         
@@ -250,6 +250,13 @@ class MainARViewController: UIViewController {
         }
     }
     
+    
+    func updateCase3StepsDone() {
+        guard let switches = switchboard?.rows.first?.switches else { return }
+        let errors = switches.filter { $0.state == SwitchState.error }.count
+        stepsDone = nbSteps - errors
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "popoverMenu" {
             let dest = segue.destination as? MenuPopoverViewController
@@ -298,15 +305,18 @@ extension MainARViewController: ChoiceViewDelegate {
                 
                 switch choice.id {
                 case "failed":
+                    stepsDone += 1
                     step.currentSwitch?.state = .error
                     currentStep = step.getNextFailed()
                     break
                 case "ok", "unknown":
+                    stepsDone += 1
                     step.currentSwitch?.state = .normal
                     currentStep = step.getNext()
                     break
                 case "yes":
                     if step.questionId == "case2-mainswitch-broken" {
+                        stepsDone += 1
                         step.currentSwitch?.state = .error
                         if !checkedAllSwitch() {
                             currentStep = step.getNextFailed()
@@ -318,6 +328,7 @@ extension MainARViewController: ChoiceViewDelegate {
                     break
                 case "no":
                     if step.questionId == "case2-mainswitch-broken" {
+                        stepsDone += 1
                         step.currentSwitch?.state = .normal
                         if !checkedAllSwitch() {
                             currentStep = step.getNext()
@@ -336,12 +347,21 @@ extension MainARViewController: ChoiceViewDelegate {
                     break
                 }
                 
-                if step.questionId == "case2-mainswitch-broken", checkedAllSwitch() {
-                    if allSwitchWorking() {
-                        currentStep = Repair.endCaseTwo() // everything working
-                        return
+                if step.questionId == "case2-mainswitch-broken" || step.questionId == "case2-ask-lightbulb" {
+                    if checkedAllSwitch() {
+                        if allSwitchWorking() {
+                            currentStep = Repair.endCaseTwo() // everything working
+                            return
+                        }
+                        currentStep = Repair.askEquipment(prev: step, row: switchboard!.rows.first!)
                     }
-                    currentStep = Repair.askEquipment(prev: step, row: switchboard!.rows.first!)
+                    
+                    if step.questionId == "case2-mainswitch-broken" {
+                        nbSteps = switchboard!.rows.first!.switches
+                            .filter { $0.state == SwitchState.error }
+                            .count
+                        stepsDone = 0
+                    }
                 }
             }
         }
@@ -356,11 +376,13 @@ extension MainARViewController: BlurTitleDelegate {
             if step.action == .endContinue {
                 
                 if step.questionId == "case2-lightbulb-issue" {
-                    currentStep?.currentSwitch?.state = .unfixable
+                    step.currentSwitch?.state = .unfixable
+                    updateCase3StepsDone()
                 }
                 
                 if step.questionId == "case3-end" {
                     step.currentSwitch?.state = .normal
+                    updateCase3StepsDone()
                 }
                 
                 if let next = Repair.askEquipment(prev: currentStep!, row: switchboard!.rows.first!) {
@@ -376,10 +398,12 @@ extension MainARViewController: BlurTitleDelegate {
                 
                 if step.questionId == "case3-socketissue" {
                     step.currentSwitch?.state = .unfixable
+                    updateCase3StepsDone()
                 }
                 
                 if step.questionId == "case3-firstgearissue" {
                     step.currentSwitch?.state = .normal
+                    updateCase3StepsDone()
                 }
                 
                 currentStep = currentStep?.getNext()
