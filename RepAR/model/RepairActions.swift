@@ -11,7 +11,7 @@ import UIKit
 class Repair {
     
     static func run() -> RepairStep {
-        return initialCase();
+        return initialCase()
     }
     
     static func initialCaseHelp() -> RepairHelp {
@@ -23,16 +23,17 @@ class Repair {
         askHome.help = initialCaseHelp()
         askHome.choicesButtonLabel = [
             RepairButtonChoice(id: "house", title: "Maison"),
-            RepairButtonChoice(id: "apartment", title: "appartement"),
+            RepairButtonChoice(id: "apartment", title: "Appartement"),
         ]
         askHome.then(houseCase())
         askHome.thenIfFailed(apartmentCase())
-        return askHome;
+        return askHome
     }
     
     static func houseCase() -> RepairStep {
-        let ask = RepairStep(text: "Regarder par la fenêtre pour voir si dans le quartier, il y a le même problème.", action: .askSwitchBroken, view: .choices)
-        let askNeighbor = RepairStep(text: "Aller demander dans les maisons voisines s'ils ont le même soucis.", action: .askSwitchBroken, view: .choices)
+//        let ask = RepairStep(text: "Regarder par la fenêtre pour voir si dans le quartier, il y a le même problème.", action: .askSwitchBroken, view: .choices)
+        let ask = RepairStep(text: "Y a-t-il le même problème dans le quartier ?", action: .askSwitchBroken, view: .choices)
+        let askNeighbor = RepairStep(text: "Vos voisins ont-ils le même soucis ?", action: .askSwitchBroken, view: .choices)
         
         ask.questionId = "case0-mainswitch"
         askNeighbor.questionId = ask.questionId
@@ -52,22 +53,22 @@ class Repair {
         
         askNeighbor.then(goToSwitchBoardCase())  // no ou unknow
         askNeighbor.thenIfFailed(generalCase()) // yes
-        return ask;
+        return ask
     }
     
     static func apartmentCase() -> RepairStep {
-        let ask = RepairStep(text: "Regarder par la fenêtre pour voir si dans le quartier, il y a le même problème.", action: .askSwitchBroken, view: .choices)
-        let askFloor = RepairStep(text: "Regarder si il y a de la lumière sur le palier.", action: .askSwitchBroken, view: .choices)
-        let askStairCase = RepairStep(text: "Regarder s’il y a de la lumière dans la cage d’escalier.", action: .askSwitchBroken, view: .choices)
-        let askNeighbor = RepairStep(text: "Se renseigner auprès de ses voisins de palier.", action: .askSwitchBroken, view: .choices)
+//        let ask = RepairStep(text: "Regarder par la fenêtre pour voir si dans le quartier, il y a le même problème.", action: .askSwitchBroken, view: .choices)
+        let ask = RepairStep(text: "Y a-t-il le même problème dans le quartier ?", action: .askSwitchBroken, view: .choices)
+//        let askFloor = RepairStep(text: "Regarder si il y a de la lumière sur le palier.", action: .askSwitchBroken, view: .choices)
+        let askFloor = RepairStep(text: "Y a-t-il de la lumière sur le palier ?", action: .askSwitchBroken, view: .choices)
+//        let askStairCase = RepairStep(text: "Regarder s’il y a de la lumière dans la cage d’escalier.", action: .askSwitchBroken, view: .choices)
+        let askStairCase = RepairStep(text: "Y a-t-il de la lumière dans la cage d’escalier ? Se renseigner auprès de ses voisins de palier.", action: .askSwitchBroken, view: .choices)
         
         ask.questionId = "case0-mainswitch"
-        askNeighbor.questionId = ask.questionId
         askStairCase.questionId = ask.questionId
         askFloor.questionId = ask.questionId
         
         ask.help = initialCaseHelp()
-        askNeighbor.help = ask.help
         askStairCase.help = ask.help
         askFloor.help = ask.help
         
@@ -76,7 +77,6 @@ class Repair {
             RepairButtonChoice(id: "no", title: "Non"),
             RepairButtonChoice(id: "unknown", title: "Je ne sais pas"),
         ]
-        askNeighbor.choicesButtonLabel = ask.choicesButtonLabel
         askStairCase.choicesButtonLabel = ask.choicesButtonLabel
         askFloor.choicesButtonLabel = ask.choicesButtonLabel
         
@@ -86,13 +86,10 @@ class Repair {
         askFloor.then(askStairCase) // no ou unknow
         askFloor.thenIfFailed(generalCase()) // yes
         
-        askStairCase.then(askNeighbor) // no ou unknow
+        askStairCase.then(goToSwitchBoardCase()) // no ou unknow
         askStairCase.thenIfFailed(generalCase()) // yes
         
-        askNeighbor.then(goToSwitchBoardCase()) // no ou unknow
-        askNeighbor.thenIfFailed(generalCase()) // yes
-        
-        return ask;
+        return ask
     }
     
     static func generalCase() -> RepairStep {

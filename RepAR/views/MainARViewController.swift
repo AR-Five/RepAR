@@ -269,7 +269,6 @@ class MainARViewController: UIViewController {
         if segue.identifier == "popoverHelp" {
             let dest = segue.destination as? HelpViewController
             
-//            dest?.help = RepairHelp(text: "yolo", image: #imageLiteral(resourceName: "logo"))
             dest?.help = currentStep?.help
             dest?.preferredContentSize = CGSize(width: 400, height: 500)
             setupPopover(segue: segue)

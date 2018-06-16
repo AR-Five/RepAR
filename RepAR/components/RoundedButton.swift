@@ -15,6 +15,7 @@ class RoundedButton: UIButton {
     @IBInspectable var round: Bool = false
     
     override func draw(_ rect: CGRect) {
+        
         if round {
             layer.cornerRadius = rect.height / 2
         } else {

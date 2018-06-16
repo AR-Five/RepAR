@@ -24,7 +24,7 @@ class ChoiceViewController: UIViewController {
     }
     
     func createButton(title: String, tag: Int) -> RoundedButton {
-        let btn = RoundedButton()
+        let btn = RoundedButton(type: .system)
         btn.tag = tag
         btn.round = true
         btn.backgroundColor = #colorLiteral(red: 0.9921568627, green: 1, blue: 0.1333333333, alpha: 1)

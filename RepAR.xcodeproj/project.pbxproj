@@ -87,6 +87,7 @@
 		F0234DAD20BF5518004AF740 /* components */ = {
 			isa = PBXGroup;
 			children = (
+				F0234DB720BF6972004AF740 /* EdgeInsetLabel.swift */,
 				F0892A9C20A8C8BD00A1120D /* RoundedButton.swift */,
 			);
 			path = components;
@@ -143,7 +144,6 @@
 				F0234DAE20BF5528004AF740 /* views */,
 				F08F02FA20963364007AAC48 /* Extensions.swift */,
 				F0234DB520BF65CD004AF740 /* ScaledFont.swift */,
-				F0234DB720BF6972004AF740 /* EdgeInsetLabel.swift */,
 				F0D69C00206D02C500581344 /* Main.storyboard */,
 				F0D69C05206D02C500581344 /* LaunchScreen.storyboard */,
 				F04D5B8B2097DB38001A3570 /* Assets.xcassets */,
