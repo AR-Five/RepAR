@@ -67,6 +67,7 @@ class MainARViewController: UIViewController {
         nbSteps = 0
         stepsDone = 0
         toggleProgress(show: false)
+        toggleTorch(on: false)
         delegate?.onReset()
     }
     

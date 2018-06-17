@@ -111,7 +111,6 @@ class Repair {
         liftSelectedSwitch.choicesButtonLabel = [
             RepairButtonChoice(id: "failed", title: "Il est redescendu"),
             RepairButtonChoice(id: "ok", title: "Il reste levé"),
-            RepairButtonChoice(id: "unknown", title: "Je ne sais pas"),
         ]
         
         let endFirstCase = RepairStep(text: "Votre tableau électrique est opérationnel", action: .end)
@@ -246,7 +245,7 @@ class Repair {
     }
     
     static func askMoreGearAttached(sw: Switch?, next: RepairStep?, row: SwitchBoardRow) -> RepairStep? {
-        let ask = RepairStep(text: "Est-ce que tout les équipements ont été testés ?", action: .askAllGearTested, view: .choices)
+        let ask = RepairStep(text: "Est-ce que tous les équipements ont été testés ?", action: .askAllGearTested, view: .choices)
         ask.choicesButtonLabel = [
             RepairButtonChoice(id: "yes", title: "Oui", step: allGearTested(sw: sw, row: row)),
             RepairButtonChoice(id: "no", title: "Non", step: next),
@@ -284,7 +283,7 @@ class Repair {
     }
     
     static func allGearTested(sw: Switch?, row: SwitchBoardRow) -> RepairStep? {
-        let plugAll = RepairStep(text: "Rebranchez tout les équipements", action: .plugAll, view: .navigation)
+        let plugAll = RepairStep(text: "Rebranchez tous les équipements", action: .plugAll, view: .navigation)
         let ask = RepairStep(text: "Ce disjoncteur a-t-il sauté ?", action: .askSwitchBroken, view: .choices)
         
         let tempIssue = RepairStep(text: "Si ce phénomène se reproduit, il faut appeler un électricien.", action: .endContinue)
