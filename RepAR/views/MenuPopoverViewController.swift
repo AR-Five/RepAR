@@ -32,8 +32,9 @@ class MenuPopoverViewController: UIViewController {
     @IBOutlet var torchButton: RoundedButton!
     
     @IBAction func onTapHome(_ sender: UIButton) {
-        delegate?.onTapHome()
-        dismiss(animated: false, completion: nil)
+        dismiss(animated: false) {
+            self.delegate?.onTapHome()
+        }
     }
     
     @IBAction func onToggleTorch(_ sender: UIButton) {

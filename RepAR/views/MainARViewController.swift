@@ -51,7 +51,6 @@ class MainARViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         modalPresentationStyle = .currentContext
-        progressBar.tintColor = #colorLiteral(red: 0.9921568627, green: 1, blue: 0.1333333333, alpha: 1)
         
         infoLabel.layer.cornerRadius = 15
         
@@ -63,14 +62,12 @@ class MainARViewController: UIViewController {
     }
     
     func reset() {
-        delegate?.onReset()
-        stepsDone = 0
         currentStep = Repair.run()
         switchboard = nil
-        
         nbSteps = 0
         stepsDone = 0
         toggleProgress(show: false)
+        delegate?.onReset()
     }
     
     func toggleProgress(show: Bool) {
